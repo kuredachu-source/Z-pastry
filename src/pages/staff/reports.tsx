@@ -121,7 +121,7 @@ export default function Reports() {
     const a = document.createElement("a");
     const stamp = new Date().toISOString().slice(0, 10);
     a.href = url;
-    a.download = `elga-cafe-report-${period}-${stamp}.csv`;
+    a.download = `ZPASTRY-cafe-report-${period}-${stamp}.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();

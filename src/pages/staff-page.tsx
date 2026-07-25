@@ -25,7 +25,7 @@ const ALL_TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "settings", label: "Settings", icon: <Settings size={18} /> },
 ];
 
-const ROLE_KEY = "elga_cafe_staff_role_v1";
+const ROLE_KEY = "ZPASTRY_cafe_staff_role_v1";
 
 function RoleGate({ onEnter }: { onEnter: (role: Role) => void }) {
   const { data: staffAuth } = useStaffAuth();
@@ -51,7 +51,7 @@ function RoleGate({ onEnter }: { onEnter: (role: Role) => void }) {
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground px-4">
       <div className="w-full max-w-sm bg-card border border-card-border rounded-2xl p-6 space-y-5">
         <div className="text-center">
-          <h1 className="font-serif text-xl font-bold">ELGA Cafe</h1>
+          <h1 className="font-serif text-xl font-bold">Z Pastry Cafe</h1>
           <p className="text-xs text-muted-foreground mt-1">Who's logging in to the Staff Terminal?</p>
         </div>
 
@@ -133,7 +133,7 @@ export default function StaffPage() {
       {/* Sidebar — desktop */}
       <aside className="w-56 shrink-0 bg-sidebar border-r border-sidebar-border flex-col hidden md:flex">
         <div className="px-5 py-5 border-b border-sidebar-border">
-          <h1 className="font-serif text-lg font-bold text-sidebar-foreground">ELGA Cafe</h1>
+          <h1 className="font-serif text-lg font-bold text-sidebar-foreground">Z Pastry Cafe</h1>
           <p className="text-[10px] font-semibold tracking-[0.3em] text-sidebar-foreground/50 mt-0.5 uppercase">
             Staff Terminal · {role === "admin" ? "Admin" : "Worker"}
           </p>
@@ -180,7 +180,7 @@ export default function StaffPage() {
       {/* Mobile top nav */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-sidebar border-b border-sidebar-border">
         <div className="flex items-center justify-between px-4 py-3">
-          <h1 className="font-serif font-bold text-sidebar-foreground">ELGA Cafe — Staff</h1>
+          <h1 className="font-serif font-bold text-sidebar-foreground">Z Pastry Cafe — Staff</h1>
           <div className="flex items-center gap-1">
             <button
               onClick={switchRole}
@@ -222,7 +222,7 @@ export default function StaffPage() {
             <h2 className="font-serif text-2xl font-bold">
               {TABS.find((t) => t.id === activeTab)?.label}
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">ELGA Cafe · Dire Dawa, Ethiopia</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Z Pastry Cafe · Dire Dawa, Ethiopia</p>
           </div>
 
           {activeTab === "orders" && <OrderQueue />}

@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 function StaffRoute() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="elga-cafe-theme">
+    <ThemeProvider defaultTheme="light" storageKey="ZPASTRY-cafe-theme">
       <StaffPage />
     </ThemeProvider>
   );

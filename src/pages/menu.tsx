@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+﻿import { useState, useRef, useEffect, useCallback } from "react";
 import { ClipboardList, X, Plus, Minus, MessageCircle, MessageSquareText, Send, Mic, MicOff, Bell } from "lucide-react";
 import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, distanceMeters } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ const LANGUAGES: { code: Lang; nativeName: string; dir: "ltr" | "rtl" }[] = [
   { code: "ar", nativeName: "العربية", dir: "rtl" },
 ];
 
-const LANG_STORAGE_KEY = "elga_customer_lang";
+const LANG_STORAGE_KEY = "ZPASTRY_customer_lang";
 
 function readStoredLang(): Lang {
   if (typeof window === "undefined") return "en";
@@ -81,7 +81,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderSummary: "Order Summary — Table {id}",
     paymentLabel: "Payment: {method}",
     howWasExperience: "How was your experience?",
-    tapToRate: "Tap to rate your visit at ELGA Cafe",
+    tapToRate: "Tap to rate your visit at Z Pastry Cafe",
     skip: "Skip",
     messageStaff: "Message Staff",
     askStaffPlaceholder: "Ask staff anything about your order — e.g. \"Is my food coming soon?\"",
@@ -111,7 +111,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderReadyDesc: "Order #{id} is ready — enjoy!",
     orderHash: "Order #{id}",
     checkingLocation: "Checking your location...",
-    outsideCafeTitle: "You're outside ELGA Cafe",
+    outsideCafeTitle: "You're outside Z Pastry Cafe",
     outsideCafeBody: "The menu and ordering are only available while you're at the cafe. Come back inside to continue.",
     locationNeededTitle: "Location access needed",
     locationNeededBody: "To use the menu, please allow location access in your browser so we can confirm you're at the cafe, then reload this page.",
@@ -144,7 +144,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderSummary: "የትዕዛዝ ማጠቃለያ — ጠረጴዛ {id}",
     paymentLabel: "ክፍያ: {method}",
     howWasExperience: "አገልግሎቱ እንዴት ነበር?",
-    tapToRate: "በኤልጋ ካፌ የነበረዎትን ጉብኝት ለመመዘን ይንኩ",
+    tapToRate: "በዜድ ፓስትሪ ካፌ የነበረዎትን ጉብኝት ለመመዘን ይንኩ",
     skip: "ዝለል",
     messageStaff: "ለሰራተኞች መልእክት ላክ",
     askStaffPlaceholder: "ስለ ትዕዛዝዎ ማንኛውንም ነገር ሰራተኞችን ይጠይቁ — ለምሳሌ 'ምግቤ እየመጣ ነው?'",
@@ -174,7 +174,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderReadyDesc: "ትዕዛዝ #{id} ዝግጁ ነው — ይመገቡ!",
     orderHash: "ትዕዛዝ #{id}",
     checkingLocation: "አካባቢዎን በመፈተሽ ላይ...",
-    outsideCafeTitle: "ከኤልጋ ካፌ ውጭ ነዎት",
+    outsideCafeTitle: "ከዜድ ፓስትሪ ካፌ ውጭ ነዎት",
     outsideCafeBody: "ምናሌው እና ትዕዛዝ ማድረግ የሚቻለው በካፌው ውስጥ ሲኖሩ ብቻ ነው። ለመቀጠል ወደ ውስጥ ይመለሱ።",
     locationNeededTitle: "የአካባቢ መዳረሻ ያስፈልጋል",
     locationNeededBody: "ምናሌውን ለመጠቀም እባክዎ በአሳሽዎ ላይ የአካባቢ መዳረሻን ይፍቀዱ፣ ከዚያም ይህን ገጽ እንደገና ይጫኑት።",
@@ -207,7 +207,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderSummary: "Cuunfaa Ajajaa — Minjaala {id}",
     paymentLabel: "Kaffaltii: {method}",
     howWasExperience: "Tajaajilli akkamitti ture?",
-    tapToRate: "Daawwannaa keessan Kafee ELGA sadarkeessuuf tuqaa",
+    tapToRate: "Daawwannaa keessan Kafee ZPASTRY sadarkeessuuf tuqaa",
     skip: "Darbi",
     messageStaff: "Hojjettootaaf Ergaa Ergi",
     askStaffPlaceholder: "Waa'ee ajaja keessanii hojjettoota gaafadhaa — fakkeenyaaf 'Nyaanni koo dhufaa jiraa?'",
@@ -237,7 +237,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderReadyDesc: "Ajaja #{id} qophaa'eera — nyaadhaa!",
     orderHash: "Ajaja #{id}",
     checkingLocation: "Bakka keessan sakattaa jira...",
-    outsideCafeTitle: "Kafee ELGA alaa jirtu",
+    outsideCafeTitle: "Kafee ZPASTRY alaa jirtu",
     outsideCafeBody: "Menyuu fi ajaja gochuun kan danda'amu yeroo kafee keessa jirtan qofa. Ajaja itti fufuuf gara keessaatti deebi'aa.",
     locationNeededTitle: "Hayyama bakkaa barbaachisa",
     locationNeededBody: "Menyuu fayyadamuuf, akka mirkaneessinu bakka kafee keessa jirtan, browser keessan irratti hayyama bakkaa eeyyamaa, ergasii fuula kana haaromsaa.",
@@ -270,7 +270,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderSummary: "Soo koobid Dalab — Miiska {id}",
     paymentLabel: "Lacag-bixin: {method}",
     howWasExperience: "Sidee ahayd waaya-aragnimadaada?",
-    tapToRate: "Taabo si aad u qiimeyso booqashadaada Kafee ELGA",
+    tapToRate: "Taabo si aad u qiimeyso booqashadaada Kafee ZPASTRY",
     skip: "Ka bood",
     messageStaff: "Farriin u dir Shaqaalaha",
     askStaffPlaceholder: "Wax kasta oo ku saabsan dalabkaaga weydii shaqaalaha — tusaale 'Cuntadaydu ma soo socotaa?'",
@@ -300,7 +300,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     orderReadyDesc: "Dalab #{id} waa diyaar — raaxayso!",
     orderHash: "Dalab #{id}",
     checkingLocation: "Goobtaada waa la hubinayaa...",
-    outsideCafeTitle: "Waxaad ka baxday Kafeega ELGA",
+    outsideCafeTitle: "Waxaad ka baxday Kafeega ZPASTRY",
     outsideCafeBody: "Liiska cuntada iyo dalabku waxay u furan yihiin kaliya marka aad kafeega joogto. Dib ugu soo noqo si aad u sii wadato.",
     locationNeededTitle: "Waa loo baahan yahay ogolaanshaha goobta",
     locationNeededBody: "Si aad u isticmaasho liiska cuntada, fadlan ka ogolow ogolaanshaha goobta biraawsarkaaga, kadibna dib u soo rar boggan.",
@@ -407,7 +407,7 @@ const STATUS_INFO: Record<string, { labelKey: string; icon: string; color: strin
   served:   { labelKey: "statusServed",    icon: "✅", color: "text-muted-foreground" },
 };
 
-const WELCOME_TEXT = "እንኳን ወደ ኤልጋ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ዛሬ ምን ማዘዝ ይፈልጋሉ?";
+const WELCOME_TEXT = "እንኳን ወደ ዜድ ፓስትሪ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ዛሬ ምን ማዘዝ ይፈልጋሉ?";
 
 // Table detection: the ONLY source of truth is the `table` param encoded in
 // the QR code on that physical table (see staff/qr-generator.tsx). This is
@@ -483,7 +483,7 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
                 style={{ background: "#c8891a", transform: "scale(1.3)" }} />
             </div>
 
-            {/* ELGA Cafe title */}
+            {/* Z Pastry Cafe title */}
             {(phase === "title" || phase === "ai" || phase === "exit") && (
               <div className="anim-fade-up space-y-1" style={{ animationDelay: "0s" }}>
                 <h1
@@ -496,7 +496,7 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
                     filter: "drop-shadow(0 1px 1px rgba(160,96,16,0.2))",
                   }}
                 >
-                  ELGA Cafe
+                  Z Pastry Cafe
                 </h1>
                 <p className="text-xs font-semibold tracking-[0.5em] text-amber-800/60 uppercase">Dire Dawa · Ethiopia</p>
               </div>
@@ -519,7 +519,7 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
                     style={{ background: "linear-gradient(135deg,#d4a017,#a06010)" }}>IB</div>
                   <div className="text-left">
                     <p lang="am" className="text-stone-800 font-ethiopic font-bold text-base leading-tight">እስራኤል በላይ</p>
-                    <p className="text-amber-700/70 text-[10px] font-semibold tracking-widest uppercase">AI Hostess · ELGA Cafe</p>
+                    <p className="text-amber-700/70 text-[10px] font-semibold tracking-widest uppercase">AI Hostess · Z Pastry Cafe</p>
                   </div>
                 </div>
                 <p lang="am" className="text-stone-700 text-base leading-relaxed font-light font-ethiopic">
@@ -567,7 +567,7 @@ export default function MenuPage() {
   const [unreadStaffReplies, setUnreadStaffReplies] = useState(0);
   const [israelOpen, setIsraelOpen] = useState(false);
   const [israelMessages, setIsraelMessages] = useState<IsraelMessage[]>([
-    { role: "assistant", content: "እንኳን ወደ ኤልጋ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ምናሌያችን ከምን ላስተዋውቅዎ?" }
+    { role: "assistant", content: "እንኳን ወደ ዜድ ፓስትሪ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ምናሌያችን ከምን ላስተዋውቅዎ?" }
   ]);
   const [israelInput, setIsraelInput] = useState("");
   const [israelStreaming, setIsraelStreaming] = useState(false);
@@ -1076,7 +1076,7 @@ export default function MenuPage() {
         >
           <div className="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-serif font-bold tracking-wide">ELGA Cafe</h1>
+              <h1 className="text-3xl font-serif font-bold tracking-wide">Z Pastry Cafe</h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-xs font-sans font-semibold tracking-[0.35em] opacity-70">DIRE DAWA</p>
                 <span
@@ -1440,7 +1440,7 @@ export default function MenuPage() {
 
         {/* Footer */}
         <footer className="max-w-5xl mx-auto px-4 py-6 mt-4 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center">© ELGA Cafe · Dire Dawa, Ethiopia</p>
+          <p className="text-xs text-muted-foreground text-center">© Z Pastry Cafe · Dire Dawa, Ethiopia</p>
         </footer>
 
         {/* Israel Belay Floating Chat */}

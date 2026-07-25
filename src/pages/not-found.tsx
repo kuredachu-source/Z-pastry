@@ -21,7 +21,7 @@ export default function NotFound() {
             to="/"
             className="inline-block rounded-xl px-5 py-2.5 text-sm font-semibold text-accent-foreground bg-accent hover:opacity-90 transition-opacity"
           >
-            Back to ELGA Cafe
+            Back to Z Pastry Cafe
           </Link>
         </CardContent>
       </Card>

@@ -19,7 +19,7 @@ serve(async (req) => {
 
     const VAPID_PUBLIC_KEY = Deno.env.get("VAPID_PUBLIC_KEY");
     const VAPID_PRIVATE_KEY = Deno.env.get("VAPID_PRIVATE_KEY");
-    const VAPID_SUBJECT = Deno.env.get("VAPID_SUBJECT") || "mailto:hello@elgacafe.example";
+    const VAPID_SUBJECT = Deno.env.get("VAPID_SUBJECT") || "mailto:hello@ZPASTRYcafe.example";
     if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
       throw new Error("VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY are not configured as function secrets");
     }
@@ -37,7 +37,7 @@ serve(async (req) => {
     if (error) throw error;
 
     const payload = JSON.stringify({
-      title: title || "ELGA Cafe",
+      title: title || "Z Pastry Cafe",
       body: body || "Your order is ready!",
       orderId,
     });

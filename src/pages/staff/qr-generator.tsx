@@ -8,7 +8,7 @@ import QRCode from "qrcode";
 // Falls back to this only when rendered with no window (SSR/build-time); in the
 // browser we always use the real deployed origin, so this works on any host
 // (Vercel, custom domain, localhost) without hardcoding a provider domain.
-const FALLBACK_BASE_URL = "https://elgacafe.vercel.app";
+const FALLBACK_BASE_URL = "https://ZPASTRYcafe.vercel.app";
 
 function getPublicBaseUrl() {
   if (typeof window === "undefined") return FALLBACK_BASE_URL;
@@ -39,7 +39,7 @@ export default function QRGenerator() {
     if (!qrDataUrl) return;
     const a = document.createElement("a");
     a.href = qrDataUrl;
-    a.download = `elga-cafe-table-${tableInput}.png`;
+    a.download = `ZPASTRY-cafe-table-${tableInput}.png`;
     a.click();
   }
 

@@ -26,7 +26,7 @@ function Index() {
               backgroundClip: "text",
             }}
           >
-            ELGA Cafe
+            Z Pastry Cafe
           </h1>
           <p className="text-xs font-semibold tracking-[0.4em] text-amber-800/60 uppercase mt-1">Dire Dawa · Ethiopia</p>
         </div>

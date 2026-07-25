@@ -131,7 +131,7 @@ export const getListSentimentLogsQueryKey = () => ["sentiment_logs"] as const;
 export const getAnalyticsSummaryQueryKey = (period: string) => ["analytics_summary", period] as const;
 
 // ===== Menu Items =====
-const MENU_CACHE_KEY = "elga_cafe_menu_cache_v1";
+const MENU_CACHE_KEY = "ZPASTRY_cafe_menu_cache_v1";
 function loadMenuCache(): MenuItem[] | undefined {
   if (typeof window === "undefined") return undefined;
   try {
@@ -864,7 +864,7 @@ export function distanceMeters(lat1: number, lon1: number, lat2: number, lon2: n
   return R * c;
 }
 
-const SETTINGS_KEY = "elga_cafe_settings_v1";
+const SETTINGS_KEY = "ZPASTRY_cafe_settings_v1";
 
 export function loadSettings(): AppSettings {
   if (typeof window === "undefined") return DEFAULT_SETTINGS;

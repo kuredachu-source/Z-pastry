@@ -1,4 +1,4 @@
-// ELGA Cafe service worker — only job is Web Push delivery.
+// Z Pastry Cafe service worker — only job is Web Push delivery.
 // This runs in the background, independent of any open tab, which is what
 // lets "Order ready" reach the customer even after they've left the page.
 
@@ -11,7 +11,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let payload = { title: "ELGA Cafe", body: "Your order is ready!" };
+  let payload = { title: "Z Pastry Cafe", body: "Your order is ready!" };
   try {
     if (event.data) payload = { ...payload, ...event.data.json() };
   } catch {
@@ -30,7 +30,7 @@ self.addEventListener("push", (event) => {
   );
 });
 
-// Tapping the notification focuses an already-open ELGA Cafe tab if there is
+// Tapping the notification focuses an already-open Z Pastry Cafe tab if there is
 // one, otherwise opens a fresh one straight to the menu.
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
