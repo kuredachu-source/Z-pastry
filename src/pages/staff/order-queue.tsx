@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Clock, ChevronRight, Receipt, Package, Utensils, Check, MessageSquareText, Send } from "lucide-react";
 import { useListActiveOrders, useUpdateOrderStatus, getListActiveOrdersQueryKey, formatEthiopianTime, clearBillRequest, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
@@ -72,6 +72,7 @@ export default function OrderQueue() {
   const { data: appSettings } = useAppSettings();
   const savedWaiters = appSettings?.waiters || [];
   const [filter, setFilter] = useState<OrderStatus | "all">("all");
+  const [tableSearch, setTableSearch] = useState("");
   const [connected, setConnected] = useState(false);
   const [orders, setOrders] = useState<any[]>([]);
   const [waiterPrompt, setWaiterPrompt] = useState<{ orderId: number } | null>(null);
@@ -153,7 +154,8 @@ export default function OrderQueue() {
   // Only show non-served orders in the queue. Served orders remain in the
   // database for analytics but are hidden from the live queue UI.
   const visibleOrders = orders.filter((o) => o.status !== "served");
-  const activeOrders = visibleOrders.filter((o) => filter === "all" ? true : o.status === filter);
+  const searchedOrders = tableSearch.trim() === "" ? visibleOrders : visibleOrders.filter((o) => String(o.tableId ?? "").toLowerCase().includes(tableSearch.trim().toLowerCase()));
+  const activeOrders = searchedOrders.filter((o) => filter === "all" ? true : o.status === filter);
   const counts = STATUS_ORDER.reduce<Record<string, number>>((acc, s) => {
     acc[s] = visibleOrders.filter((o) => o.status === s).length;
     return acc;
@@ -223,6 +225,13 @@ export default function OrderQueue() {
         ))}
       </div>
 
+      <input
+        type="text"
+        value={tableSearch}
+        onChange={(e) => setTableSearch(e.target.value)}
+        placeholder="Search by table number..."
+        className="w-full text-sm bg-secondary rounded-xl px-3 py-2 outline-none border border-border focus:border-ring placeholder:text-muted-foreground mb-2"
+      />
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setFilter("all")}
