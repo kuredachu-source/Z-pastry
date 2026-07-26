@@ -833,11 +833,12 @@ export default function MenuPage() {
         throw new Error("AI hostess is not configured yet. Add Supabase environment variables in Vercel and redeploy.");
       }
 
-      const res = await fetch(`${url}/functions/v1/hana-chat`, {
+      const res = await fetch(`https://ncoqjumzkmlrdcesusbj.supabase.co/functions/v1/hana-chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${publishableKey}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jb3FqdW16a21scmRjZXN1c2JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzY1ODcsImV4cCI6MjA5OTgxMjU4N30.PYx2ERejs2PH5x_yWJ-8F_iLaURMtujs1oQgw0XakaA`,
+    "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jb3FqdW16a21scmRjZXN1c2JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMzY1ODcsImV4cCI6MjA5OTgxMjU4N30.PYx2ERejs2PH5x_yWJ-8F_iLaURMtujs1oQgw0XakaA",
         },
         body: JSON.stringify({
           message: userMsg,
