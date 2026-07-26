@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -538,6 +538,7 @@ export type OrderMessage = {
   sender: "customer" | "staff";
   message: string;
   waiterName?: string | null;
+  imageUrl?: string | null;
   createdAt: string;
 };
 
@@ -549,6 +550,7 @@ function mapOrderMessage(row: any): OrderMessage {
     sender: row.sender,
     message: row.message,
     waiterName: row.waiter_name,
+    imageUrl: row.image_url,
     createdAt: row.created_at,
   };
 }
@@ -599,7 +601,7 @@ export function useOrderMessagesRealtime(orderId: number | null | undefined) {
 export function useSendOrderMessage() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { orderId: number; tableId: string; sender: "customer" | "staff"; message: string; waiterName?: string }) => {
+    mutationFn: async (input: { orderId: number; tableId: string; sender: "customer" | "staff"; message: string; waiterName?: string; imageUrl?: string }) => {
       const { data, error } = await supabase
         .from("order_messages")
         .insert({
@@ -607,6 +609,7 @@ export function useSendOrderMessage() {
           table_id: input.tableId,
           sender: input.sender,
           message: input.message,
+          image_url: input.imageUrl ?? null,
           waiter_name: input.waiterName ?? null,
         })
         .select("*")
@@ -620,6 +623,14 @@ export function useSendOrderMessage() {
       );
     },
   });
+}
+export async function uploadBillPhoto(file: File, orderId: number): Promise<string> {
+  const ext = file.name.split(".").pop() || "jpg";
+  const path = `${orderId}/${Date.now()}.${ext}`;
+  const { error } = await supabase.storage.from("bill-photos").upload(path, file);
+  if (error) throw error;
+  const { data } = supabase.storage.from("bill-photos").getPublicUrl(path);
+  return data.publicUrl;
 }
 
 // ===== Sentiment =====

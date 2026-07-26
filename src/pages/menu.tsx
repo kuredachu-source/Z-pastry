@@ -1,6 +1,6 @@
 ﻿import { useState, useRef, useEffect, useCallback } from "react";
-import { ClipboardList, X, Plus, Minus, MessageCircle, MessageSquareText, Send, Mic, MicOff, Bell } from "lucide-react";
-import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, distanceMeters } from "@/lib/data";
+import { ClipboardList, X, Plus, Minus, MessageCircle, MessageSquareText, Send, Mic, MicOff, Bell, Camera } from "lucide-react";
+import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, uploadBillPhoto, distanceMeters } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSupabaseConfig, isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { subscribeOrderToPush, pushSupported } from "@/lib/push";
@@ -789,6 +789,25 @@ export default function MenuPage() {
       toast({ title: t("messageFailedTitle"), description: t("messageFailedDesc"), variant: "destructive" });
     }
   }
+  const [uploadingBillPhoto, setUploadingBillPhoto] = useState(false);
+  async function sendBillPhoto(file: File) {
+    if (!trackedOrder) return;
+    setUploadingBillPhoto(true);
+    try {
+      const url = await uploadBillPhoto(file, trackedOrder.id);
+      await sendOrderMessage.mutateAsync({
+        orderId: trackedOrder.id,
+        tableId: trackedOrder.tableId,
+        sender: "customer",
+        message: "📷 Bill photo",
+        imageUrl: url,
+      });
+    } catch {
+      toast({ title: t("messageFailedTitle"), description: t("messageFailedDesc"), variant: "destructive" });
+    } finally {
+      setUploadingBillPhoto(false);
+    }
+  }
 
   // Badge the chat bubble when staff reply while the panel is closed.
   const lastSeenStaffCountRef = useRef(0);
@@ -1389,7 +1408,7 @@ export default function MenuPage() {
                     {msg.sender === "staff" && (
                       <p className="text-[10px] font-bold opacity-60 mb-0.5">{msg.waiterName || "Staff"}</p>
                     )}
-                    {msg.message}
+                    {msg.imageUrl ? (<img src={msg.imageUrl} alt="Bill photo" className="max-w-full rounded-lg" />) : (msg.message)}
                   </div>
                 </div>
               ))}
@@ -1412,6 +1431,22 @@ export default function MenuPage() {
                 className="bg-primary text-primary-foreground rounded-xl px-3 py-2 disabled:opacity-50 hover:opacity-90 transition-opacity"
               >
                 <Send size={16} />
+              </button>
+              <input
+                type="file"
+                accept="image/*"
+                id="bill-photo-input"
+                className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) sendBillPhoto(f); e.target.value = ""; }}
+              />
+              <button
+                data-testid="button-send-bill-photo"
+                onClick={() => document.getElementById("bill-photo-input")?.click()}
+                disabled={uploadingBillPhoto}
+                className="bg-secondary text-secondary-foreground rounded-xl px-3 py-2 disabled:opacity-50 hover:opacity-90 transition-opacity"
+                title="Send bill payment screenshot"
+              >
+                <Camera size={16} />
               </button>
             </div>
           </DialogContent>

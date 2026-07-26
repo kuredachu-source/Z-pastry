@@ -451,7 +451,7 @@ function StaffChatPanel({ orderId, tableId }: { orderId: number; tableId: string
                 ? "bg-primary text-primary-foreground rounded-tr-sm"
                 : "bg-secondary text-secondary-foreground rounded-tl-sm"
             }`}>
-              {msg.message}
+              {msg.imageUrl ? (<img src={msg.imageUrl} alt="Bill photo" className="max-w-full rounded-lg cursor-pointer" onClick={() => window.open(msg.imageUrl, "_blank")} />) : (msg.message)}
             </div>
           </div>
         ))}
