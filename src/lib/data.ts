@@ -626,7 +626,8 @@ export function useSendOrderMessage() {
 }
 export async function uploadBillPhoto(file: File, orderId: number): Promise<string> {
   const ext = file.name.split(".").pop() || "jpg";
-  const path = `${orderId}/${Date.now()}.${ext}`;
+  const today = new Date().toISOString().slice(0, 10);
+  const path = `${today}/${orderId}/${Date.now()}.${ext}`;
   const { error } = await supabase.storage.from("bill-photos").upload(path, file);
   if (error) throw error;
   const { data } = supabase.storage.from("bill-photos").getPublicUrl(path);
