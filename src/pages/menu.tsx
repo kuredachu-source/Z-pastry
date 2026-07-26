@@ -855,36 +855,14 @@ export default function MenuPage() {
             })),
         }),
       });
-      if (!res.ok || !res.body) throw new Error("chat failed");
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        let nl: number;
-        while ((nl = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, nl);
-          buffer = buffer.slice(nl + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (!line.startsWith("data: ")) continue;
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") continue;
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              assistantContent += content;
-              setIsraelMessages((prev) => {
-                const updated = [...prev];
-                updated[updated.length - 1] = { role: "assistant", content: assistantContent };
-                return updated;
-              });
-            }
-          } catch { /* partial */ }
-        }
-      }
+      if (!res.ok) throw new Error("chat failed");
+      const data = await res.json();
+      assistantContent = data.reply ?? "";
+      setIsraelMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: "assistant", content: assistantContent };
+        return updated;
+      });
     } catch {
       setIsraelMessages((prev) => {
         const updated = [...prev];
