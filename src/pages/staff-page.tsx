@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Moon, Sun, ClipboardList, BarChart3, UtensilsCrossed, MessageSquare, QrCode, Settings, FileSpreadsheet, ShieldCheck, UserRound, Lock } from "lucide-react";
+﻿import { useState } from "react";
+import { Moon, Sun, ClipboardList, BarChart3, UtensilsCrossed, MessageSquare, QrCode, Settings, FileSpreadsheet, ShieldCheck, UserRound, Lock, Image as ImageIcon } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import OrderQueue from "@/pages/staff/order-queue";
 import AnalyticsHub from "@/pages/staff/analytics-hub";
@@ -8,11 +8,12 @@ import SentimentLogs from "@/pages/staff/sentiment-logs";
 import QRGenerator from "@/pages/staff/qr-generator";
 import SettingsPage from "@/pages/staff/settings";
 import Reports from "@/pages/staff/reports";
+import BillPhotos from "@/pages/staff/bill-photos";
 import { useStaffAuth } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-type Tab = "orders" | "analytics" | "menu" | "sentiment" | "qr" | "reports" | "settings";
+type Tab = "orders" | "analytics" | "menu" | "sentiment" | "qr" | "reports" | "bills" | "settings";
 type Role = "worker" | "admin";
 
 const ALL_TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
@@ -21,6 +22,7 @@ const ALL_TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "menu", label: "Menu Edit", icon: <UtensilsCrossed size={18} /> },
   { id: "sentiment", label: "Sentiment", icon: <MessageSquare size={18} /> },
   { id: "reports", label: "Reports", icon: <FileSpreadsheet size={18} /> },
+  { id: "bills", label: "Bill Photos", icon: <ImageIcon size={18} /> },
   { id: "qr", label: "QR Generator", icon: <QrCode size={18} /> },
   { id: "settings", label: "Settings", icon: <Settings size={18} /> },
 ];
@@ -230,6 +232,7 @@ export default function StaffPage() {
           {role === "admin" && activeTab === "menu" && <MenuEdit />}
           {role === "admin" && activeTab === "sentiment" && <SentimentLogs />}
           {role === "admin" && activeTab === "reports" && <Reports />}
+          {role === "admin" && activeTab === "bills" && <BillPhotos />}
           {role === "admin" && activeTab === "qr" && <QRGenerator />}
           {role === "admin" && activeTab === "settings" && <SettingsPage />}
         </div>

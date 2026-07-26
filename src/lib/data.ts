@@ -634,6 +634,21 @@ export async function uploadBillPhoto(file: File, orderId: number): Promise<stri
   return data.publicUrl;
 }
 
+
+export function useListBillPhotos() {
+  return useQuery({
+    queryKey: ["bill-photos"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("order_messages")
+        .select("*")
+        .not("image_url", "is", null)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []).map(mapOrderMessage);
+    },
+  });
+}
 // ===== Sentiment =====
 export function useListSentimentLogs() {
   return useQuery({
