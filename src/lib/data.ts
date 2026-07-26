@@ -649,6 +649,13 @@ export function useListBillPhotos() {
     },
   });
 }
+
+export async function deleteBillPhotos(ids: number[]): Promise<number> {
+  if (ids.length === 0) return 0;
+  const { error } = await supabase.from("order_messages").delete().in("id", ids);
+  if (error) throw error;
+  return ids.length;
+}
 // ===== Sentiment =====
 export function useListSentimentLogs() {
   return useQuery({
