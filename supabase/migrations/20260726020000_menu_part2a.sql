@@ -1,0 +1,17 @@
+insert into public.menu_items (name_en, name_am, description, price, category, image_url, available) values
+('Beef Burger', 'ቢፍ በርገር', null, 460, 'Burger', 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheeseburger.jpg', true),
+('Cheese Burger', 'ቺዝ በርገር', null, 520, 'Burger', 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheeseburger.jpg', true),
+('Special Burger', 'ስፔሻል በርገር', null, 635, 'Burger', 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheeseburger.jpg', true),
+('Chicken Burger', 'ቺክን በርገር', null, 635, 'Burger', 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheeseburger.jpg', true),
+('Double Cheese Burger', 'ደብል ቺዝ በርገር', null, 690, 'Burger', 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheeseburger.jpg', true),
+('Vegetable Pizza', 'አትክልት ፒዛ', null, 460, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Meat/Beef Pizza', 'ሥጋ ፒዛ (ቢፍ)', null, 575, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Tuna Pizza', 'ቱና ፒዛ', null, 635, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Chicken Pizza', 'ቺክን ፒዛ', null, 750, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Margarita Pizza', 'ማርጋሪታ ፒዛ', null, 690, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Z Special Pizza', 'Z ስፔሻል ፒዛ', null, 805, 'Pizza', 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza%20margherita.png', true),
+('Chicken Shawarma', 'ቺክን ሸዋርማ', null, 635, 'Shawarma', 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma.png', true),
+('Tuna Shawarma', 'ቱና ሸዋርማ', null, 575, 'Shawarma', 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma.png', true),
+('Special Shawarma', 'ስፔሻል ሸዋርማ', null, 690, 'Shawarma', 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma.png', true),
+('Normal Wet Shawarma / Wrap', 'ኖርማል እርጥብ', null, 230, 'Shawarma', 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma.png', true),
+('Special Wet Shawarma / Wrap', 'ስፔሻል እርጥብ', null, 300, 'Shawarma', 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma.png', true);

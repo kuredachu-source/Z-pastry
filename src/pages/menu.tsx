@@ -1132,13 +1132,13 @@ export default function MenuPage() {
           </div>
 
           {/* Category filter */}
-          <div className="max-w-5xl mx-auto px-4 pb-3 flex flex-wrap gap-2">
+          <div className="max-w-5xl mx-auto px-4 pb-3 flex gap-2 overflow-x-auto no-scrollbar" style={{ WebkitOverflowScrolling: "touch" }}>
             {categories.map((cat) => (
               <button
                 key={cat}
                 data-testid={`button-category-${cat}`}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all active:scale-95 ${
+                className={`shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all active:scale-95 ${
                   activeCategory === cat
                     ? "bg-accent text-accent-foreground shadow-sm"
                     : "bg-primary-foreground/10 text-primary-foreground/80 hover:bg-primary-foreground/20"
