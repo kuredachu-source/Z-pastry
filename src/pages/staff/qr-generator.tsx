@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { QrCode, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,10 +37,28 @@ export default function QRGenerator() {
 
   function download() {
     if (!qrDataUrl) return;
-    const a = document.createElement("a");
-    a.href = qrDataUrl;
-    a.download = `ZPASTRY-cafe-table-${tableInput}.png`;
-    a.click();
+    const img = new Image();
+    img.onload = () => {
+      const padding = 20;
+      const labelHeight = 60;
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width + padding * 2;
+      canvas.height = img.height + padding * 2 + labelHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = "#fffbf5";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, padding, padding);
+      ctx.fillStyle = "#3b1f0a";
+      ctx.font = "bold 32px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`Table ${tableInput}`, canvas.width / 2, img.height + padding + 42);
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = `ZPASTRY-cafe-table-${tableInput}.png`;
+      a.click();
+    };
+    img.src = qrDataUrl;
   }
 
   return (
