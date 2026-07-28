@@ -558,6 +558,25 @@ export default function MenuPage() {
   const [sentimentOpen, setSentimentOpen] = useState(false);
   const [lastOrderId, setLastOrderId] = useState<number | null>(null);
   const [trackedOrder, setTrackedOrder] = useState<{ id: number; status: string; tableId: string } | null>(null);
+  useEffect(() => {
+    if (!tableId) return;
+    const savedId = window.localStorage.getItem(`ZPASTRY_tracked_order_${tableId}`);
+    if (!savedId) return;
+    (async () => {
+      const { data, error } = await supabase.from("orders").select("id,status,table_id").eq("id", Number(savedId)).single();
+      if (error || !data) { window.localStorage.removeItem(`ZPASTRY_tracked_order_${tableId}`); return; }
+      if (data.status === "served") { window.localStorage.removeItem(`ZPASTRY_tracked_order_${tableId}`); return; }
+      setTrackedOrder({ id: data.id, status: data.status, tableId: data.table_id });
+    })();
+  }, [tableId]);
+  useEffect(() => {
+    if (!tableId) return;
+    if (trackedOrder && trackedOrder.status !== "served") {
+      window.localStorage.setItem(`ZPASTRY_tracked_order_${tableId}`, String(trackedOrder.id));
+    } else {
+      window.localStorage.removeItem(`ZPASTRY_tracked_order_${tableId}`);
+    }
+  }, [trackedOrder, tableId]);
   const [pushEnabled, setPushEnabled] = useState(false);
   const [staffChatOpen, setStaffChatOpen] = useState(false);
   const [staffChatInput, setStaffChatInput] = useState("");
