@@ -131,7 +131,7 @@ export const getListSentimentLogsQueryKey = () => ["sentiment_logs"] as const;
 export const getAnalyticsSummaryQueryKey = (period: string) => ["analytics_summary", period] as const;
 
 // ===== Menu Items =====
-const MENU_CACHE_KEY = "ZPASTRY_cafe_menu_cache_v1";
+const MENU_CACHE_KEY = "ZPASTRY_cafe_menu_cache_v2";
 function loadMenuCache(): MenuItem[] | undefined {
   if (typeof window === "undefined") return undefined;
   try {
