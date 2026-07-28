@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import { Clock, ChevronRight, Receipt, Package, Utensils, Check, MessageSquareText, Send, X } from "lucide-react";
-import { useListActiveOrders, useUpdateOrderStatus, getListActiveOrdersQueryKey, formatEthiopianTime, clearBillRequest, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, deleteOrder } from "@/lib/data";
+import { useListActiveOrders, useUpdateOrderStatus, getListActiveOrdersQueryKey, formatEthiopianTime, clearBillRequest, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, deleteOrder, removeOrderItem } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
@@ -319,7 +319,6 @@ export default function OrderQueue() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="font-bold text-accent text-lg">ETB {order.totalAmount.toFixed(0)}</p>
-                  <button data-testid={`button-delete-order-${order.id}`} onClick={() => handleDeleteOrder(order.id)} className="text-muted-foreground hover:text-destructive transition-colors mb-1"><X size={16} /></button>
                   <select data-testid={`select-payment-${order.id}`} value={order.paymentMethod ?? "cash"} onChange={(e) => updateStatus.mutate({ id: order.id, data: { paymentMethod: e.target.value } })} className="text-xs bg-transparent text-muted-foreground border border-border rounded-full px-2 py-0.5 mt-1 outline-none capitalize">
                     <option value="cash">Cash</option>
                     {(appSettings?.paymentMethods ?? []).map((pm) => (<option key={pm.id} value={pm.id}>{pm.name}</option>))}
@@ -328,8 +327,20 @@ export default function OrderQueue() {
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {(order.items || []).map((item: any) => (
-                  <span key={item.id} className="bg-secondary text-secondary-foreground text-xs rounded-full px-2.5 py-1 font-medium">
+                  <span key={item.id} className="bg-secondary text-secondary-foreground text-xs rounded-full pl-2.5 pr-1.5 py-1 font-medium inline-flex items-center gap-1">
                     {item.nameEn} ×{item.quantity}
+                    <button
+                      data-testid={`button-remove-item-${item.id}`}
+                      onClick={() => {
+                        if (!confirm(`Remove "${item.nameEn}" from this order?`)) return;
+                        removeOrderItem(order.id, item.id, item.unitPrice * item.quantity)
+                          .then(() => queryClient.invalidateQueries({ queryKey: getListActiveOrdersQueryKey() }))
+                          .catch(() => alert("Failed to remove item."));
+                      }}
+                      className="hover:text-destructive"
+                    >
+                      <X size={12} />
+                    </button>
                   </span>
                 ))}
               </div>

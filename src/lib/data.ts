@@ -703,6 +703,16 @@ export async function uploadMenuImage(file: File): Promise<string> {
   const { data } = supabase.storage.from("menu-images").getPublicUrl(path);
   return data.publicUrl;
 }
+
+export async function removeOrderItem(orderId: number, itemId: number, deductAmount: number): Promise<void> {
+  const { error: delErr } = await supabase.from("order_items").delete().eq("id", itemId);
+  if (delErr) throw delErr;
+  const { data: order, error: getErr } = await supabase.from("orders").select("total_amount").eq("id", orderId).single();
+  if (getErr) throw getErr;
+  const newTotal = Math.max(0, Number(order.total_amount) - deductAmount);
+  const { error: updErr } = await supabase.from("orders").update({ total_amount: newTotal }).eq("id", orderId);
+  if (updErr) throw updErr;
+}
 // ===== Sentiment =====
 export function useListSentimentLogs() {
   return useQuery({
