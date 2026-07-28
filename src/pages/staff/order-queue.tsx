@@ -23,9 +23,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 
-const STATUS_ORDER = ["pending", "preparing", "ready"] as const;
+const STATUS_ORDER = ["pending", "preparing", "ready", "served"] as const;
 type OrderStatus = typeof STATUS_ORDER[number];
-const NEXT_STATUS: Record<OrderStatus, "preparing" | "ready" | "served"> = {
+const NEXT_STATUS: Partial<Record<OrderStatus, "preparing" | "ready" | "served">> = {
   pending: "preparing",
   preparing: "ready",
   ready: "served",
@@ -35,12 +35,14 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
   pending: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300",
   preparing: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300",
   ready: "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300",
+  served: "bg-gray-100 text-gray-800 dark:bg-gray-900/40 dark:text-gray-300",
 };
 
 const STATUS_ICONS: Record<OrderStatus, string> = {
   pending: "🟡",
   preparing: "🔵",
   ready: "🟢",
+  served: "✅",
 };
 
 function ElapsedTimer({ createdAt }: { createdAt: string }) {
@@ -163,10 +165,11 @@ export default function OrderQueue() {
   // Only show non-served orders in the queue. Served orders remain in the
   // database for analytics but are hidden from the live queue UI.
   const visibleOrders = orders.filter((o) => o.status !== "served");
-  const searchedOrders = tableSearch.trim() === "" ? visibleOrders : visibleOrders.filter((o) => String(o.tableId ?? "").toLowerCase().includes(tableSearch.trim().toLowerCase()));
+  const baseOrders = filter === "served" ? orders.filter((o) => o.status === "served") : visibleOrders;
+  const searchedOrders = tableSearch.trim() === "" ? baseOrders : baseOrders.filter((o) => String(o.tableId ?? "").toLowerCase().includes(tableSearch.trim().toLowerCase()));
   const activeOrders = searchedOrders.filter((o) => filter === "all" ? true : o.status === filter);
   const counts = STATUS_ORDER.reduce<Record<string, number>>((acc, s) => {
-    acc[s] = visibleOrders.filter((o) => o.status === s).length;
+    acc[s] = (s === "served" ? orders : visibleOrders).filter((o) => o.status === s).length;
     return acc;
   }, {});
 
@@ -221,7 +224,7 @@ export default function OrderQueue() {
         </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-4 gap-2">
         {STATUS_ORDER.map((s) => (
           <button
             key={s}
@@ -357,6 +360,7 @@ export default function OrderQueue() {
                     </span>
                   )}
                 </button>
+                {NEXT_STATUS[order.status as OrderStatus] && (
                 <Button
                   data-testid={`button-advance-${order.id}`}
                   onClick={() => advance(order.id, order.status as OrderStatus)}
@@ -367,6 +371,7 @@ export default function OrderQueue() {
                   Mark as {NEXT_STATUS[order.status as OrderStatus]}
                   <ChevronRight size={14} />
                 </Button>
+                )}
               </div>
             </div>
           );})}
