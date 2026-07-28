@@ -4,13 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import QRCode from "qrcode";
-
-// Falls back to this only when rendered with no window (SSR/build-time); in the
-// browser we always use the real deployed origin, so this works on any host
-// (Vercel, custom domain, localhost) without hardcoding a provider domain.
-const FALLBACK_BASE_URL = "https://ZPASTRYcafe.vercel.app";
-
+const PERMANENT_BASE_URL = "https://z-pastry-sapian.vercel.app";
 function getPublicBaseUrl() {
+  if (typeof window === "undefined") return PERMANENT_BASE_URL;
+  if (window.location.hostname === "localhost") return window.location.origin;
+  return PERMANENT_BASE_URL;
+}
   if (typeof window === "undefined") return FALLBACK_BASE_URL;
   return window.location.origin;
 }
