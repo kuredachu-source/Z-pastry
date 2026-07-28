@@ -10,9 +10,6 @@ function getPublicBaseUrl() {
   if (window.location.hostname === "localhost") return window.location.origin;
   return PERMANENT_BASE_URL;
 }
-  if (typeof window === "undefined") return FALLBACK_BASE_URL;
-  return window.location.origin;
-}
 
 export default function QRGenerator() {
   const [tableInput, setTableInput] = useState("T1");
