@@ -656,6 +656,19 @@ export async function deleteBillPhotos(ids: number[]): Promise<number> {
   if (error) throw error;
   return ids.length;
 }
+
+export function useMenuItemsRealtime() {
+  const qc = useQueryClient();
+  useEffect(() => {
+    const channel = supabase
+      .channel("menu-items-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "menu_items" }, () => {
+        qc.invalidateQueries({ queryKey: getListMenuItemsQueryKey() });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [qc]);
+}
 // ===== Sentiment =====
 export function useListSentimentLogs() {
   return useQuery({

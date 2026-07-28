@@ -1,6 +1,6 @@
 ﻿import { useState, useRef, useEffect, useCallback } from "react";
 import { ClipboardList, X, Plus, Minus, MessageCircle, MessageSquareText, Send, Mic, MicOff, Bell, Camera } from "lucide-react";
-import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, uploadBillPhoto, distanceMeters } from "@/lib/data";
+import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, uploadBillPhoto, useMenuItemsRealtime, distanceMeters } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSupabaseConfig, isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { subscribeOrderToPush, pushSupported } from "@/lib/push";
@@ -540,6 +540,7 @@ export default function MenuPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { data: menuItems = [], isLoading } = useListMenuItems();
+  useMenuItemsRealtime();
   const createOrder = useCreateOrder();
   const requestBill = useRequestBill();
   const [orderType, setOrderType] = useState<"dinein" | "takeaway">("dinein");
