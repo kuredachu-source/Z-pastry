@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Plus, Pencil, Trash2, X, Check, Link, Upload } from "lucide-react";
 import {
   useListMenuItems,
@@ -6,6 +6,7 @@ import {
   useUpdateMenuItem,
   useDeleteMenuItem,
   getListMenuItemsQueryKey,
+  uploadMenuImage,
 } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured, getMissingSupabaseEnv } from "@/integrations/supabase/client";
@@ -91,14 +92,19 @@ export default function MenuEdit() {
     setShowForm(true);
   }
 
-  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  const [uploadingImage, setUploadingImage] = useState(false);
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setForm((prev) => ({ ...prev, imageUrl: ev.target?.result as string }));
-    };
-    reader.readAsDataURL(file);
+    setUploadingImage(true);
+    try {
+      const url = await uploadMenuImage(file);
+      setForm((prev) => ({ ...prev, imageUrl: url }));
+    } catch {
+      toast({ title: "Image upload failed", variant: "destructive" });
+    } finally {
+      setUploadingImage(false);
+    }
   }
 
   function handleSubmit() {
