@@ -310,7 +310,10 @@ export default function OrderQueue() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="font-bold text-accent text-lg">ETB {order.totalAmount.toFixed(0)}</p>
-                  {order.paymentMethod && <p className="text-xs text-muted-foreground capitalize">{order.paymentMethod}</p>}
+                  <select data-testid={`select-payment-${order.id}`} value={order.paymentMethod ?? "cash"} onChange={(e) => updateStatus.mutate({ id: order.id, data: { paymentMethod: e.target.value } })} className="text-xs bg-transparent text-muted-foreground border border-border rounded-full px-2 py-0.5 mt-1 outline-none capitalize">
+                    <option value="cash">Cash</option>
+                    {(appSettings?.paymentMethods ?? []).map((pm) => (<option key={pm.id} value={pm.id}>{pm.name}</option>))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-wrap gap-1.5">

@@ -459,8 +459,10 @@ export async function clearBillRequest(id: number) {
 export function useUpdateOrderStatus() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: { status: string; waiterName?: string } }) => {
-      const update: { status: string; waiter_name?: string } = { status: data.status };
+    mutationFn: async ({ id, data }: { id: number; data: { status?: string; waiterName?: string; paymentMethod?: string | null } }) => {
+      const update: { status?: string; waiter_name?: string; payment_method?: string | null } = {};
+      if (data.status) update.status = data.status;
+      if (data.paymentMethod !== undefined) update.payment_method = data.paymentMethod;
       if (data.waiterName) update.waiter_name = data.waiterName;
       const { data: row, error } = await supabase
         .from("orders")
