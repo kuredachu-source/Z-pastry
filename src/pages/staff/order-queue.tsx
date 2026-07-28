@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from "react";
-import { Clock, ChevronRight, Receipt, Package, Utensils, Check, MessageSquareText, Send } from "lucide-react";
-import { useListActiveOrders, useUpdateOrderStatus, getListActiveOrdersQueryKey, formatEthiopianTime, clearBillRequest, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage } from "@/lib/data";
+import { Clock, ChevronRight, Receipt, Package, Utensils, Check, MessageSquareText, Send, X } from "lucide-react";
+import { useListActiveOrders, useUpdateOrderStatus, getListActiveOrdersQueryKey, formatEthiopianTime, clearBillRequest, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, deleteOrder } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
@@ -65,6 +65,15 @@ function ElapsedTimer({ createdAt }: { createdAt: string }) {
 export default function OrderQueue() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  async function handleDeleteOrder(orderId: number) {
+    if (!confirm("Delete this order? This cannot be undone.")) return;
+    try {
+      await deleteOrder(orderId);
+      queryClient.invalidateQueries({ queryKey: getListActiveOrdersQueryKey() });
+    } catch {
+      alert("Failed to delete order.");
+    }
+  }
   const { data: initialOrders = [], isLoading } = useListActiveOrders({
     query: { staleTime: Infinity, refetchOnWindowFocus: false },
   });
@@ -310,6 +319,7 @@ export default function OrderQueue() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="font-bold text-accent text-lg">ETB {order.totalAmount.toFixed(0)}</p>
+                  <button data-testid={`button-delete-order-${order.id}`} onClick={() => handleDeleteOrder(order.id)} className="text-muted-foreground hover:text-destructive transition-colors mb-1"><X size={16} /></button>
                   <select data-testid={`select-payment-${order.id}`} value={order.paymentMethod ?? "cash"} onChange={(e) => updateStatus.mutate({ id: order.id, data: { paymentMethod: e.target.value } })} className="text-xs bg-transparent text-muted-foreground border border-border rounded-full px-2 py-0.5 mt-1 outline-none capitalize">
                     <option value="cash">Cash</option>
                     {(appSettings?.paymentMethods ?? []).map((pm) => (<option key={pm.id} value={pm.id}>{pm.name}</option>))}
