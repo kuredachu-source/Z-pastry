@@ -661,7 +661,7 @@ export function useMenuItemsRealtime() {
   const qc = useQueryClient();
   useEffect(() => {
     const channel = supabase
-      .channel("menu-items-realtime")
+      .channel(`menu-items-realtime-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "menu_items" }, () => {
         qc.invalidateQueries({ queryKey: getListMenuItemsQueryKey() });
       })
