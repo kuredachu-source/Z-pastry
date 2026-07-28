@@ -1,4 +1,4 @@
-// Z Pastry Cafe service worker — only job is Web Push delivery.
+﻿// Z Pastry Cafe service worker — only job is Web Push delivery.
 // This runs in the background, independent of any open tab, which is what
 // lets "Order ready" reach the customer even after they've left the page.
 
@@ -26,6 +26,9 @@ self.addEventListener("push", (event) => {
       tag: payload.orderId ? `order-${payload.orderId}` : undefined,
       data: { orderId: payload.orderId, url: "/menu" },
       requireInteraction: true,
+      renotify: true,
+      vibrate: [400, 150, 400, 150, 400, 150, 400],
+      silent: false,
     }),
   );
 });
