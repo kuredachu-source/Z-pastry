@@ -317,10 +317,12 @@ export function useListActiveOrders(opts?: { query?: { staleTime?: number; refet
   return useQuery({
     queryKey: getListActiveOrdersQueryKey(),
     queryFn: async () => {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
       const { data, error } = await supabase
         .from("orders")
         .select("*, order_items(*)")
-        .in("status", ACTIVE_STATUSES)
+        .or(`status.in.(${ACTIVE_STATUSES.join(",")}),and(status.eq.served,created_at.gte.${todayStart.toISOString()})`)
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []).map(mapOrder);
