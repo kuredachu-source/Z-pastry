@@ -2,19 +2,14 @@
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-// ===== Ethiopian (Addis Ababa, EAT — UTC+3) date/time formatters =====
-// All timestamps shown in the app must be rendered in Ethiopian local time.
 const ET_TZ = "Africa/Addis_Ababa";
 
 export function formatEthiopianDateTime(value: string | Date): string {
   const d = typeof value === "string" ? new Date(value) : value;
   if (isNaN(d.getTime())) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: ET_TZ,
-    year: "numeric", month: "short", day: "2-digit",
-    hour: "2-digit", minute: "2-digit", second: "2-digit",
-    hour12: false,
-  }).format(d) + " EAT";
+  const et = toEthiopianCalendar(d);
+  const timeStr = new Intl.DateTimeFormat("en-GB", { timeZone: ET_TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(d);
+  return `${et.day} ${ETHIOPIAN_MONTHS[et.month - 1]} ${et.year}, ${timeStr} EAT`;
 }
 
 export function formatEthiopianTime(value: string | Date): string {
@@ -26,6 +21,30 @@ export function formatEthiopianTime(value: string | Date): string {
   }).format(d) + " EAT";
 }
 
+const ETHIOPIAN_MONTHS = ["Meskerem", "Tikimt", "Hidar", "Tahsas", "Tir", "Yekatit", "Megabit", "Miazia", "Ginbot", "Sene", "Hamle", "Nehase", "Pagume"];
+
+function gregorianToJdn(year: number, month: number, day: number): number {
+  const y = month <= 2 ? year - 1 : year;
+  const m = month <= 2 ? month + 12 : month;
+  const a = Math.floor(y / 100);
+  const b = 2 - a + Math.floor(a / 4);
+  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524;
+}
+
+export function toEthiopianCalendar(d: Date): { year: number; month: number; day: number } {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: ET_TZ, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(d);
+  const map: Record<string, string> = {};
+  parts.forEach((p) => { map[p.type] = p.value; });
+  const gYear = Number(map.year), gMonth = Number(map.month), gDay = Number(map.day);
+  const JD_EPOCH_OFFSET_AMETE_MIHRET = 1723856;
+  const jdn = gregorianToJdn(gYear, gMonth, gDay);
+  const r = (jdn - JD_EPOCH_OFFSET_AMETE_MIHRET) % 1461;
+  const n = (r % 365) + 365 * Math.floor(r / 1460);
+  const year = 4 * Math.floor((jdn - JD_EPOCH_OFFSET_AMETE_MIHRET) / 1461) + Math.floor(r / 365) - Math.floor(r / 1460);
+  const month = Math.floor(n / 30) + 1;
+  const day = (n % 30) + 1;
+  return { year, month, day };
+}
 // ===== Types (camelCase API matching original) =====
 export type MenuItem = {
   id: number;
