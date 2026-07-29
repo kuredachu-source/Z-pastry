@@ -36,17 +36,21 @@ const PERIOD_LABELS: Record<Period, string> = {
 
 function periodStartDate(period: Period): Date {
   const now = new Date();
+  const addisParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Africa/Addis_Ababa", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+  const ap: Record<string, string> = {};
+  addisParts.forEach((p) => { ap[p.type] = p.value; });
+  const addisTodayStart = new Date(Date.UTC(Number(ap.year), Number(ap.month) - 1, Number(ap.day), -3, 0, 0));
   let start: Date;
   if (period === "day") {
-    start = new Date(now); start.setHours(0, 0, 0, 0);
+    start = addisTodayStart;
   } else if (period === "week") {
-    start = new Date(now); start.setHours(0, 0, 0, 0);
-    const dow = (start.getDay() + 6) % 7; // 0 = Monday
-    start.setDate(start.getDate() - dow);
+    const dow = (addisTodayStart.getUTCDay() + 6) % 7;
+    start = new Date(addisTodayStart);
+    start.setUTCDate(start.getUTCDate() - dow);
   } else if (period === "month") {
-    start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    start = new Date(Date.UTC(Number(ap.year), Number(ap.month) - 1, 1, -3, 0, 0));
   } else {
-    start = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
+    start = new Date(Date.UTC(Number(ap.year), 0, 1, -3, 0, 0));
   }
   return start;
 }
