@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { Download, FileSpreadsheet, Trash2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useListOrders, formatEthiopianTime, clearAnalyticsForPeriod, getListOrdersQueryKey } from "@/lib/data";
+import { useListOrders, formatEthiopianTime, clearAnalyticsForPeriod, getListOrdersQueryKey, deleteOrder } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type Row = {
+  orderId: number;
   date: string;
   time: string;
   waiter: string;
@@ -78,6 +79,21 @@ export default function Reports() {
   const { toast } = useToast();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDeleteRow = async (id: number) => {
+    if (!window.confirm("Delete this order? This cannot be undone.")) return;
+    setDeletingId(id);
+    try {
+      await deleteOrder(id);
+      qc.invalidateQueries({ queryKey: getListOrdersQueryKey() });
+      toast({ title: "Order deleted" });
+    } catch (e) {
+      toast({ title: "Failed to delete order", variant: "destructive" });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const rows = useMemo<Row[]>(() => {
     const since = periodStartDate(period).getTime();
@@ -92,6 +108,7 @@ export default function Reports() {
       const dineType = o.orderType === "takeaway" ? "Takeaway" : "Dine In";
       for (const it of o.items || []) {
         out.push({
+          orderId: o.id,
           date: dateStr,
           time: timeStr,
           waiter: o.waiterName || "—",
@@ -208,17 +225,17 @@ export default function Reports() {
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-secondary text-secondary-foreground">
-                {["date", "time", "waiter", "table/order", "dine_type", "item", "category", "qty", "unit_price_etb", "total_etb", "status", "payment"].map((h) => (
+                {["date", "time", "waiter", "table/order", "dine_type", "item", "category", "qty", "unit_price_etb", "total_etb", "status", "payment", "action"].map((h) => (
                   <th key={h} className="text-left font-bold px-3 py-2 whitespace-nowrap capitalize">{h.replace(/_/g, " ")}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
-                <tr><td colSpan={12} className="text-center py-10 text-muted-foreground">Loading…</td></tr>
+                <tr><td colSpan={13} className="text-center py-10 text-muted-foreground">Loading…</td></tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={12} className="text-center py-10 text-muted-foreground">
+                  <td colSpan={13} className="text-center py-10 text-muted-foreground">
                     <FileSpreadsheet size={28} className="mx-auto mb-2 opacity-30" />
                     No orders in this period
                   </td>
@@ -237,6 +254,11 @@ export default function Reports() {
                   <td className="px-3 py-2 text-right font-medium">{r.total.toFixed(0)}</td>
                   <td className="px-3 py-2 whitespace-nowrap capitalize">{r.status}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{r.payment}</td>
+                  <td className="px-3 py-2 text-right">
+                    <button onClick={() => handleDeleteRow(r.orderId)} disabled={deletingId === r.orderId} className="text-destructive hover:opacity-70 transition-opacity disabled:opacity-30">
+                      <Trash2 size={14} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
