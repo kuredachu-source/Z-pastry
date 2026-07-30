@@ -336,8 +336,11 @@ export function useListActiveOrders(opts?: { query?: { staleTime?: number; refet
   return useQuery({
     queryKey: getListActiveOrdersQueryKey(),
     queryFn: async () => {
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
+      const nowForBoundary = new Date();
+      const addisParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Africa/Addis_Ababa", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(nowForBoundary);
+      const ap: Record<string, string> = {};
+      addisParts.forEach((p) => { ap[p.type] = p.value; });
+      const todayStart = new Date(Date.UTC(Number(ap.year), Number(ap.month) - 1, Number(ap.day), -3, 0, 0));
       const { data, error } = await supabase
         .from("orders")
         .select("*, order_items(*)")
