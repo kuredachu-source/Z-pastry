@@ -1320,7 +1320,7 @@ export default function MenuPage() {
                 <p className="text-sm text-muted-foreground">
                   {t("selectPaymentFor", { amount: cartTotal.toFixed(0) })} <span className="text-xs opacity-60">{t("optionalToggle")}</span>
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                   {allPaymentMethods.map((pm) => (
                     <button
                       key={pm.id}
