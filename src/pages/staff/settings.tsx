@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Save, Pencil, Check, Plus, Trash2, X, MapPin, LocateFixed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -482,6 +482,23 @@ export default function SettingsPage() {
             <p className="text-center text-sm text-muted-foreground py-4">No payment methods. Add one above.</p>
           )}
         </div>
+      <div className="bg-card border border-card-border rounded-2xl p-5 space-y-4">
+        <div>
+          <h3 className="font-serif font-semibold text-lg flex items-center gap-2">🥡 Takeaway Material Fee</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">Extra charge added automatically when customer selects Takeaway (ETB). Set to 0 to disable.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <input
+            type="number"
+            min="0"
+            value={settings?.takeawayFee ?? 0}
+            onChange={(e) => { if (!settings) return; const next = { ...settings, takeawayFee: Number(e.target.value) }; setSettings(next); save(next); }}
+            className="w-32 text-sm bg-secondary rounded-xl px-3 py-2 outline-none border border-border focus:border-ring"
+          />
+          <span className="text-sm text-muted-foreground">ETB</span>
+        </div>
+      </div>
+
       </div>
 
       <div className="bg-card border border-card-border rounded-2xl p-5 space-y-4">

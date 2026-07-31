@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { ClipboardList, X, Plus, Minus, MessageCircle, MessageSquareText, Send, Mic, MicOff, Bell, Camera } from "lucide-react";
 import { useListMenuItems, useCreateOrder, useCreateSentimentLog, useRequestBill, getListOrdersQueryKey, getListMenuItemsQueryKey, getAppSettingsQueryKey, useAppSettings, useOrderMessages, useOrderMessagesRealtime, useSendOrderMessage, uploadBillPhoto, useMenuItemsRealtime, distanceMeters } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
@@ -39,10 +39,10 @@ type Lang = "en" | "am" | "om" | "so" | "ar";
 
 const LANGUAGES: { code: Lang; nativeName: string; dir: "ltr" | "rtl" }[] = [
   { code: "en", nativeName: "English", dir: "ltr" },
-  { code: "am", nativeName: "አማርኛ", dir: "ltr" },
+  { code: "am", nativeName: "????", dir: "ltr" },
   { code: "om", nativeName: "Afaan Oromoo", dir: "ltr" },
   { code: "so", nativeName: "Soomaali", dir: "ltr" },
-  { code: "ar", nativeName: "العربية", dir: "rtl" },
+  { code: "ar", nativeName: "???????", dir: "rtl" },
 ];
 
 const LANG_STORAGE_KEY = "ZPASTRY_customer_lang";
@@ -57,7 +57,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   en: {
     chooseLanguage: "Choose Language",
     qrScanTitle: "Scan the QR code on your table",
-    qrScanBody: "Open your phone's camera and point it at the QR code on your table. It'll take you straight to your table's menu — no typing, no searching.",
+    qrScanBody: "Open your phone's camera and point it at the QR code on your table. It'll take you straight to your table's menu � no typing, no searching.",
     table: "Table",
     orderButton: "Order",
     allCategory: "All",
@@ -73,42 +73,42 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     total: "Total",
     proceedToPayment: "Proceed to Payment",
     selectPaymentFor: "Select payment for ETB {amount}",
-    optionalToggle: "(optional — tap to toggle)",
+    optionalToggle: "(optional � tap to toggle)",
     back: "Back",
     continueBtn: "Continue",
     placeOrder: "Place Order",
     placing: "Placing...",
-    orderSummary: "Order Summary — Table {id}",
+    orderSummary: "Order Summary � Table {id}",
     paymentLabel: "Payment: {method}",
     howWasExperience: "How was your experience?",
     tapToRate: "Tap to rate your visit at Z Pastry Cafe",
     skip: "Skip",
     messageStaff: "Message Staff",
-    askStaffPlaceholder: "Ask staff anything about your order — e.g. \"Is my food coming soon?\"",
+    askStaffPlaceholder: "Ask staff anything about your order � e.g. \"Is my food coming soon?\"",
     typeMessagePlaceholder: "Type a message to staff...",
     statusPending: "Order Received",
     statusPreparing: "Preparing",
     statusReady: "Ready for Pickup!",
-    statusServed: "Served ✓",
+    statusServed: "Served ?",
     autoRefreshing: "Auto-refreshing...",
-    requestBill: "💰 Request Bill",
-    billOnWay: "✓ Bill on the way",
-    sending: "Sending…",
+    requestBill: "?? Request Bill",
+    billOnWay: "? Bill on the way",
+    sending: "Sending�",
     orderPlacedTitle: "Order placed!",
     orderPlacedDesc: "Order #{id} sent to kitchen.",
-    notifOnTitle: "🔔 Notifications on",
+    notifOnTitle: "?? Notifications on",
     notifOnDesc: "We'll alert you the moment your order is ready.",
     errorTitle: "Error",
     orderFailedDesc: "Failed to place order.",
-    billRequestedTitle: "Bill requested ✓",
+    billRequestedTitle: "Bill requested ?",
     billRequestedDesc: "Staff have been notified. They'll be right with you.",
     billFailedDesc: "Could not request the bill. Please call a staff member.",
     messageFailedTitle: "Message failed to send",
     messageFailedDesc: "Please try again or wave down a staff member.",
     thankYouTitle: "Thank you!",
     feedbackRecordedDesc: "Your feedback was recorded.",
-    orderReadyTitle: "🟢 Order Ready!",
-    orderReadyDesc: "Order #{id} is ready — enjoy!",
+    orderReadyTitle: "?? Order Ready!",
+    orderReadyDesc: "Order #{id} is ready � enjoy!",
     orderHash: "Order #{id}",
     checkingLocation: "Checking your location...",
     outsideCafeTitle: "You're outside Z Pastry Cafe",
@@ -118,72 +118,72 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     locationUnsupportedBody: "Your device or browser doesn't support location, so we can't verify you're at the cafe. Please ask a staff member for help.",
   },
   am: {
-    chooseLanguage: "ቋንቋ ይምረጡ",
-    qrScanTitle: "በጠረጴዛዎ ላይ ያለውን የQR ኮድ ይቃኙ",
-    qrScanBody: "የስልክዎን ካሜራ ይክፈቱ እና በጠረጴዛዎ ላይ ወዳለው የQR ኮድ ያመልክቱ። ወደ ጠረጴዛዎ ምናሌ በቀጥታ ይወስድዎታል — ምንም መተየብ ወይም መፈለግ አያስፈልግም።",
-    table: "ጠረጴዛ",
-    orderButton: "ትዕዛዝ",
-    allCategory: "ሁሉም",
-    addToOrder: "ወደ ትዕዛዝ ጨምር",
-    yourOrder: "የእርስዎ ትዕዛዝ",
-    choosePayment: "የክፍያ ዘዴ ይምረጡ",
-    confirmOrder: "ትዕዛዝ ያረጋግጡ",
-    orderEmpty: "ትዕዛዝዎ ባዶ ነው",
-    whereHaveIt: "የት ይመገባሉ?",
-    dineIn: "በካፌ ውስጥ",
-    takeaway: "ወደ ውጭ",
-    toGo: "ለመውሰድ",
-    total: "ጠቅላላ",
-    proceedToPayment: "ወደ ክፍያ ይቀጥሉ",
-    selectPaymentFor: "ለ ETB {amount} የክፍያ ዘዴ ይምረጡ",
-    optionalToggle: "(አማራጭ — ለመቀየር ይንኩ)",
-    back: "ተመለስ",
-    continueBtn: "ቀጥል",
-    placeOrder: "ትዕዛዝ አስገባ",
-    placing: "በማስገባት ላይ...",
-    orderSummary: "የትዕዛዝ ማጠቃለያ — ጠረጴዛ {id}",
-    paymentLabel: "ክፍያ: {method}",
-    howWasExperience: "አገልግሎቱ እንዴት ነበር?",
-    tapToRate: "በዜድ ፓስትሪ ካፌ የነበረዎትን ጉብኝት ለመመዘን ይንኩ",
-    skip: "ዝለል",
-    messageStaff: "ለሰራተኞች መልእክት ላክ",
-    askStaffPlaceholder: "ስለ ትዕዛዝዎ ማንኛውንም ነገር ሰራተኞችን ይጠይቁ — ለምሳሌ 'ምግቤ እየመጣ ነው?'",
-    typeMessagePlaceholder: "ለሰራተኞች መልእክት ይጻፉ...",
-    statusPending: "ትዕዛዝ ደርሷል",
-    statusPreparing: "በዝግጅት ላይ",
-    statusReady: "ለመውሰድ ዝግጁ ነው!",
-    statusServed: "ቀርቧል ✓",
-    autoRefreshing: "በራስ-ሰር በመዘመን ላይ...",
-    requestBill: "💰 ደረሰኝ ጠይቅ",
-    billOnWay: "✓ ደረሰኝ በመንገድ ላይ ነው",
-    sending: "በመላክ ላይ…",
-    orderPlacedTitle: "ትዕዛዝ ገብቷል!",
-    orderPlacedDesc: "ትዕዛዝ #{id} ወደ ወጥ ቤት ተልኳል።",
-    notifOnTitle: "🔔 ማሳወቂያዎች በርተዋል",
-    notifOnDesc: "ትዕዛዝዎ ዝግጁ እንደሆነ ወዲያውኑ እናሳውቅዎታለን።",
-    errorTitle: "ስህተት",
-    orderFailedDesc: "ትዕዛዝ ማስገባት አልተሳካም።",
-    billRequestedTitle: "ደረሰኝ ተጠይቋል ✓",
-    billRequestedDesc: "ሰራተኞች ተነግሯቸዋል። በቅርቡ ይመጣሉ።",
-    billFailedDesc: "ደረሰኝ መጠየቅ አልተቻለም። እባክዎ ሰራተኛ ይጥሩ።",
-    messageFailedTitle: "መልእክት አልተላከም",
-    messageFailedDesc: "እባክዎ እንደገና ይሞክሩ ወይም ሰራተኛ ይጥሩ።",
-    thankYouTitle: "እናመሰግናለን!",
-    feedbackRecordedDesc: "አስተያየትዎ ተመዝግቧል።",
-    orderReadyTitle: "🟢 ትዕዛዝ ዝግጁ ነው!",
-    orderReadyDesc: "ትዕዛዝ #{id} ዝግጁ ነው — ይመገቡ!",
-    orderHash: "ትዕዛዝ #{id}",
-    checkingLocation: "አካባቢዎን በመፈተሽ ላይ...",
-    outsideCafeTitle: "ከዜድ ፓስትሪ ካፌ ውጭ ነዎት",
-    outsideCafeBody: "ምናሌው እና ትዕዛዝ ማድረግ የሚቻለው በካፌው ውስጥ ሲኖሩ ብቻ ነው። ለመቀጠል ወደ ውስጥ ይመለሱ።",
-    locationNeededTitle: "የአካባቢ መዳረሻ ያስፈልጋል",
-    locationNeededBody: "ምናሌውን ለመጠቀም እባክዎ በአሳሽዎ ላይ የአካባቢ መዳረሻን ይፍቀዱ፣ ከዚያም ይህን ገጽ እንደገና ይጫኑት።",
-    locationUnsupportedBody: "የእርስዎ መሳሪያ ወይም አሳሽ አካባቢን አይደግፍም፣ ስለዚህ በካፌው ውስጥ መሆንዎን ማረጋገጥ አንችልም። እባክዎ ሰራተኛ ያማክሩ።",
+    chooseLanguage: "??? ????",
+    qrScanTitle: "?????? ?? ???? ?QR ?? ???",
+    qrScanBody: "?????? ??? ???? ?? ?????? ?? ???? ?QR ?? ?????? ?? ????? ??? ???? ??????? � ??? ???? ??? ???? ????????",
+    table: "????",
+    orderButton: "????",
+    allCategory: "???",
+    addToOrder: "?? ???? ???",
+    yourOrder: "????? ????",
+    choosePayment: "???? ?? ????",
+    confirmOrder: "???? ?????",
+    orderEmpty: "????? ?? ??",
+    whereHaveIt: "?? ??????",
+    dineIn: "??? ???",
+    takeaway: "?? ??",
+    toGo: "?????",
+    total: "????",
+    proceedToPayment: "?? ??? ????",
+    selectPaymentFor: "? ETB {amount} ???? ?? ????",
+    optionalToggle: "(???? � ????? ???)",
+    back: "????",
+    continueBtn: "???",
+    placeOrder: "???? ????",
+    placing: "?????? ??...",
+    orderSummary: "????? ????? � ???? {id}",
+    paymentLabel: "???: {method}",
+    howWasExperience: "?????? ???? ????",
+    tapToRate: "??? ???? ?? ??????? ???? ????? ???",
+    skip: "???",
+    messageStaff: "?????? ????? ??",
+    askStaffPlaceholder: "?? ????? ?????? ??? ?????? ???? � ???? '??? ???? ???'",
+    typeMessagePlaceholder: "?????? ????? ???...",
+    statusPending: "???? ????",
+    statusPreparing: "????? ??",
+    statusReady: "????? ??? ??!",
+    statusServed: "???? ?",
+    autoRefreshing: "???-?? ????? ??...",
+    requestBill: "?? ???? ???",
+    billOnWay: "? ???? ????? ?? ??",
+    sending: "???? ??�",
+    orderPlacedTitle: "???? ????!",
+    orderPlacedDesc: "???? #{id} ?? ?? ?? ?????",
+    notifOnTitle: "?? ??????? ?????",
+    notifOnDesc: "????? ??? ????? ????? ??????????",
+    errorTitle: "????",
+    orderFailedDesc: "???? ????? ???????",
+    billRequestedTitle: "???? ????? ?",
+    billRequestedDesc: "????? ???????? ???? ?????",
+    billFailedDesc: "???? ???? ??????? ???? ???? ????",
+    messageFailedTitle: "????? ??????",
+    messageFailedDesc: "???? ????? ???? ??? ???? ????",
+    thankYouTitle: "????????!",
+    feedbackRecordedDesc: "??????? ???????",
+    orderReadyTitle: "?? ???? ??? ??!",
+    orderReadyDesc: "???? #{id} ??? ?? � ????!",
+    orderHash: "???? #{id}",
+    checkingLocation: "?????? ????? ??...",
+    outsideCafeTitle: "??? ???? ?? ?? ???",
+    outsideCafeBody: "???? ?? ???? ???? ????? ???? ??? ??? ?? ??? ????? ?? ??? ?????",
+    locationNeededTitle: "????? ???? ??????",
+    locationNeededBody: "????? ????? ???? ????? ?? ????? ????? ????? ???? ??? ?? ????? ?????",
+    locationUnsupportedBody: "????? ???? ??? ??? ????? ??????? ???? ???? ??? ????? ????? ?????? ???? ???? ?????",
   },
   om: {
     chooseLanguage: "Afaan Filadhu",
     qrScanTitle: "Koodii QR minjaala keessan irra jiru sakattaa",
-    qrScanBody: "Kaameeraa bilbila keessanii banaatii koodii QR minjaala keessan irratti argamu argisiisaa. Kallattiin gara menyuu minjaala keessaniitti isin geessa — barreessuu yookaan barbaacha hin barbaachisu.",
+    qrScanBody: "Kaameeraa bilbila keessanii banaatii koodii QR minjaala keessan irratti argamu argisiisaa. Kallattiin gara menyuu minjaala keessaniitti isin geessa � barreessuu yookaan barbaacha hin barbaachisu.",
     table: "Minjaala",
     orderButton: "Ajaja",
     allCategory: "Hunda",
@@ -197,44 +197,44 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     takeaway: "Fudhachuun",
     toGo: "Deemsaaf",
     total: "Waliigala",
-    proceedToPayment: "Gara Kaffaltiitti Ceʼi",
+    proceedToPayment: "Gara Kaffaltiitti Ce'i",
     selectPaymentFor: "ETB {amount} kaffaltii filadhu",
-    optionalToggle: "(filannoo — jijjiiruuf tuqi)",
+    optionalToggle: "(filannoo � jijjiiruuf tuqi)",
     back: "Deebi'i",
     continueBtn: "Itti Fufi",
     placeOrder: "Ajaja Ergi",
     placing: "Ergaa jira...",
-    orderSummary: "Cuunfaa Ajajaa — Minjaala {id}",
+    orderSummary: "Cuunfaa Ajajaa � Minjaala {id}",
     paymentLabel: "Kaffaltii: {method}",
     howWasExperience: "Tajaajilli akkamitti ture?",
     tapToRate: "Daawwannaa keessan Kafee ZPASTRY sadarkeessuuf tuqaa",
     skip: "Darbi",
     messageStaff: "Hojjettootaaf Ergaa Ergi",
-    askStaffPlaceholder: "Waa'ee ajaja keessanii hojjettoota gaafadhaa — fakkeenyaaf 'Nyaanni koo dhufaa jiraa?'",
+    askStaffPlaceholder: "Waa'ee ajaja keessanii hojjettoota gaafadhaa � fakkeenyaaf 'Nyaanni koo dhufaa jiraa?'",
     typeMessagePlaceholder: "Hojjettootaaf ergaa barreessi...",
     statusPending: "Ajajni Argameera",
     statusPreparing: "Qophaa'aa jira",
     statusReady: "Fudhachuuf Qophaa'eera!",
-    statusServed: "Kennameera ✓",
+    statusServed: "Kennameera ?",
     autoRefreshing: "Ofumaan haaromsaa jira...",
-    requestBill: "💰 Herrega Gaafadhu",
-    billOnWay: "✓ Herregni karaa irra jira",
-    sending: "Ergaa jira…",
+    requestBill: "?? Herrega Gaafadhu",
+    billOnWay: "? Herregni karaa irra jira",
+    sending: "Ergaa jira�",
     orderPlacedTitle: "Ajajni ergameera!",
     orderPlacedDesc: "Ajaja #{id} gara kitchenitti ergameera.",
-    notifOnTitle: "🔔 Beeksisni banaadha",
+    notifOnTitle: "?? Beeksisni banaadha",
     notifOnDesc: "Ajajni keessan yeroo qophaa'u battalumatti isin beeksisna.",
     errorTitle: "Dogoggora",
     orderFailedDesc: "Ajaja ergu hin milkoofne.",
-    billRequestedTitle: "Herregni gaafatameera ✓",
+    billRequestedTitle: "Herregni gaafatameera ?",
     billRequestedDesc: "Hojjettoonni beekaniiru. Dafanii isiniif dhufu.",
-    billFailedDesc: "Herrega gaafachuun hin dandaʼamne. Maaloo hojjettuu waamaa.",
+    billFailedDesc: "Herrega gaafachuun hin danda'amne. Maaloo hojjettuu waamaa.",
     messageFailedTitle: "Ergaan hin ergamne",
     messageFailedDesc: "Maaloo irra deebi'aa yaalaa yookaan hojjettuu waamaa.",
     thankYouTitle: "Galatoomaa!",
     feedbackRecordedDesc: "Yaadni keessan galmaa'eera.",
-    orderReadyTitle: "🟢 Ajajni Qophaa'eera!",
-    orderReadyDesc: "Ajaja #{id} qophaa'eera — nyaadhaa!",
+    orderReadyTitle: "?? Ajajni Qophaa'eera!",
+    orderReadyDesc: "Ajaja #{id} qophaa'eera � nyaadhaa!",
     orderHash: "Ajaja #{id}",
     checkingLocation: "Bakka keessan sakattaa jira...",
     outsideCafeTitle: "Kafee ZPASTRY alaa jirtu",
@@ -246,7 +246,7 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   so: {
     chooseLanguage: "Dooro Luqadda",
     qrScanTitle: "Sawir-gacmeedka QR ee miiskaaga sii sawir",
-    qrScanBody: "Fur kaamerada taleefankaaga oo u jeedi koodhka QR ee miiskaaga. Waxay kugu geynaysaa liiska cuntada miiska — wax qoraal ah ama raadin looma baahna.",
+    qrScanBody: "Fur kaamerada taleefankaaga oo u jeedi koodhka QR ee miiskaaga. Waxay kugu geynaysaa liiska cuntada miiska � wax qoraal ah ama raadin looma baahna.",
     table: "Miiska",
     orderButton: "Dalabka",
     allCategory: "Dhammaan",
@@ -262,42 +262,42 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     total: "Wadarta",
     proceedToPayment: "U gudub Lacag-bixinta",
     selectPaymentFor: "Dooro lacag-bixinta ETB {amount}",
-    optionalToggle: "(ikhtiyaari — taabo si aad u bedesho)",
+    optionalToggle: "(ikhtiyaari � taabo si aad u bedesho)",
     back: "Dib u noqo",
     continueBtn: "Sii wad",
     placeOrder: "Dir Dalabka",
     placing: "Diritaanka...",
-    orderSummary: "Soo koobid Dalab — Miiska {id}",
+    orderSummary: "Soo koobid Dalab � Miiska {id}",
     paymentLabel: "Lacag-bixin: {method}",
     howWasExperience: "Sidee ahayd waaya-aragnimadaada?",
     tapToRate: "Taabo si aad u qiimeyso booqashadaada Kafee ZPASTRY",
     skip: "Ka bood",
     messageStaff: "Farriin u dir Shaqaalaha",
-    askStaffPlaceholder: "Wax kasta oo ku saabsan dalabkaaga weydii shaqaalaha — tusaale 'Cuntadaydu ma soo socotaa?'",
+    askStaffPlaceholder: "Wax kasta oo ku saabsan dalabkaaga weydii shaqaalaha � tusaale 'Cuntadaydu ma soo socotaa?'",
     typeMessagePlaceholder: "Farriin u qor shaqaalaha...",
     statusPending: "Dalabka la helay",
     statusPreparing: "Waa la diyaarinayaa",
     statusReady: "Waa u diyaar qaadashada!",
-    statusServed: "La bixiyay ✓",
+    statusServed: "La bixiyay ?",
     autoRefreshing: "Si toos ah ayaa loo cusboonaynayaa...",
-    requestBill: "💰 Codso Bill-ka",
-    billOnWay: "✓ Bill-ku wuu socdaa",
-    sending: "Diritaanka…",
+    requestBill: "?? Codso Bill-ka",
+    billOnWay: "? Bill-ku wuu socdaa",
+    sending: "Diritaanka�",
     orderPlacedTitle: "Dalabku waa la diray!",
     orderPlacedDesc: "Dalab #{id} ayaa loo diray jikada.",
-    notifOnTitle: "🔔 Ogeysiisyada waa furan yihiin",
+    notifOnTitle: "?? Ogeysiisyada waa furan yihiin",
     notifOnDesc: "Waan kuu ogeysiin doonaa marka dalabkaagu diyaar noqdo.",
     errorTitle: "Khalad",
     orderFailedDesc: "Dalabka lama gudbin karin.",
-    billRequestedTitle: "Bill-ka waa la codsaday ✓",
+    billRequestedTitle: "Bill-ka waa la codsaday ?",
     billRequestedDesc: "Shaqaalaha ayaa la ogeysiiyay. Way kuu iman doonaan.",
     billFailedDesc: "Bill-ka lama codsan karin. Fadlan wac shaqaale.",
     messageFailedTitle: "Farriintu ma dirin",
     messageFailedDesc: "Fadlan isku day mar kale ama wac shaqaale.",
     thankYouTitle: "Mahadsanid!",
     feedbackRecordedDesc: "Ra'yigaaga waa la diiwaan geliyay.",
-    orderReadyTitle: "🟢 Dalabku waa diyaar!",
-    orderReadyDesc: "Dalab #{id} waa diyaar — raaxayso!",
+    orderReadyTitle: "?? Dalabku waa diyaar!",
+    orderReadyDesc: "Dalab #{id} waa diyaar � raaxayso!",
     orderHash: "Dalab #{id}",
     checkingLocation: "Goobtaada waa la hubinayaa...",
     outsideCafeTitle: "Waxaad ka baxday Kafeega ZPASTRY",
@@ -307,67 +307,67 @@ const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     locationUnsupportedBody: "Qalabkaaga ama biraawsarkaagu ma taageerayo goobta, sidaas darteed ma hubin karno inaad kafeega joogto. Fadlan la xiriir shaqaale.",
   },
   ar: {
-    chooseLanguage: "اختر اللغة",
-    qrScanTitle: "امسح رمز QR الموجود على طاولتك",
-    qrScanBody: "افتح كاميرا هاتفك ووجّهها نحو رمز QR الموجود على طاولتك. سينقلك مباشرة إلى قائمة طاولتك — دون كتابة أو بحث.",
-    table: "طاولة",
-    orderButton: "الطلب",
-    allCategory: "الكل",
-    addToOrder: "أضف إلى الطلب",
-    yourOrder: "طلبك",
-    choosePayment: "اختر طريقة الدفع",
-    confirmOrder: "تأكيد الطلب",
-    orderEmpty: "طلبك فارغ",
-    whereHaveIt: "أين ستتناول طلبك؟",
-    dineIn: "داخل المقهى",
-    takeaway: "طلب خارجي",
-    toGo: "للطريق",
-    total: "الإجمالي",
-    proceedToPayment: "المتابعة إلى الدفع",
-    selectPaymentFor: "اختر طريقة الدفع لمبلغ {amount} بير إثيوبي",
-    optionalToggle: "(اختياري — اضغط للتبديل)",
-    back: "رجوع",
-    continueBtn: "متابعة",
-    placeOrder: "إرسال الطلب",
-    placing: "جارٍ الإرسال...",
-    orderSummary: "ملخص الطلب — طاولة {id}",
-    paymentLabel: "الدفع: {method}",
-    howWasExperience: "كيف كانت تجربتك؟",
-    tapToRate: "اضغط لتقييم زيارتك لمقهى إلجا",
-    skip: "تخطي",
-    messageStaff: "راسل الموظفين",
-    askStaffPlaceholder: "اسأل الموظفين عن أي شيء يخص طلبك — مثلاً 'هل طعامي قادم؟'",
-    typeMessagePlaceholder: "اكتب رسالة للموظفين...",
-    statusPending: "تم استلام الطلب",
-    statusPreparing: "قيد التحضير",
-    statusReady: "جاهز للاستلام!",
-    statusServed: "تم التقديم ✓",
-    autoRefreshing: "التحديث التلقائي جارٍ...",
-    requestBill: "💰 اطلب الفاتورة",
-    billOnWay: "✓ الفاتورة في الطريق",
-    sending: "جارٍ الإرسال…",
-    orderPlacedTitle: "تم إرسال الطلب!",
-    orderPlacedDesc: "تم إرسال الطلب رقم {id} إلى المطبخ.",
-    notifOnTitle: "🔔 الإشعارات مفعّلة",
-    notifOnDesc: "سنُعلمك فور جاهزية طلبك.",
-    errorTitle: "خطأ",
-    orderFailedDesc: "فشل إرسال الطلب.",
-    billRequestedTitle: "تم طلب الفاتورة ✓",
-    billRequestedDesc: "تم إبلاغ الموظفين. سيصلون إليك قريبًا.",
-    billFailedDesc: "تعذر طلب الفاتورة. يرجى الاتصال بأحد الموظفين.",
-    messageFailedTitle: "فشل إرسال الرسالة",
-    messageFailedDesc: "يرجى المحاولة مرة أخرى أو استدعاء أحد الموظفين.",
-    thankYouTitle: "شكرًا لك!",
-    feedbackRecordedDesc: "تم تسجيل ملاحظاتك.",
-    orderReadyTitle: "🟢 الطلب جاهز!",
-    orderReadyDesc: "الطلب رقم {id} جاهز — بالهناء!",
-    orderHash: "طلب #{id}",
-    checkingLocation: "جارٍ التحقق من موقعك...",
-    outsideCafeTitle: "أنت خارج مقهى إلجا",
-    outsideCafeBody: "القائمة والطلب متاحان فقط أثناء تواجدك في المقهى. عد إلى الداخل للمتابعة.",
-    locationNeededTitle: "الوصول إلى الموقع مطلوب",
-    locationNeededBody: "لاستخدام القائمة، يرجى السماح بالوصول إلى الموقع في متصفحك للتأكد من وجودك في المقهى، ثم أعد تحميل هذه الصفحة.",
-    locationUnsupportedBody: "جهازك أو متصفحك لا يدعم تحديد الموقع، لذا لا يمكننا التأكد من وجودك في المقهى. يرجى طلب المساعدة من أحد الموظفين.",
+    chooseLanguage: "???? ?????",
+    qrScanTitle: "???? ??? QR ??????? ??? ??????",
+    qrScanBody: "???? ?????? ????? ??????? ??? ??? QR ??????? ??? ??????. ?????? ?????? ??? ????? ?????? � ??? ????? ?? ???.",
+    table: "?????",
+    orderButton: "?????",
+    allCategory: "????",
+    addToOrder: "??? ??? ?????",
+    yourOrder: "????",
+    choosePayment: "???? ????? ?????",
+    confirmOrder: "????? ?????",
+    orderEmpty: "???? ????",
+    whereHaveIt: "??? ??????? ?????",
+    dineIn: "???? ??????",
+    takeaway: "??? ?????",
+    toGo: "??????",
+    total: "????????",
+    proceedToPayment: "???????? ??? ?????",
+    selectPaymentFor: "???? ????? ????? ????? {amount} ??? ??????",
+    optionalToggle: "(??????? � ???? ???????)",
+    back: "????",
+    continueBtn: "??????",
+    placeOrder: "????? ?????",
+    placing: "???? ???????...",
+    orderSummary: "???? ????? � ????? {id}",
+    paymentLabel: "?????: {method}",
+    howWasExperience: "??? ???? ???????",
+    tapToRate: "???? ?????? ?????? ????? ????",
+    skip: "????",
+    messageStaff: "???? ????????",
+    askStaffPlaceholder: "???? ???????? ?? ?? ??? ??? ???? � ????? '?? ????? ?????'",
+    typeMessagePlaceholder: "???? ????? ????????...",
+    statusPending: "?? ?????? ?????",
+    statusPreparing: "??? ???????",
+    statusReady: "???? ????????!",
+    statusServed: "?? ??????? ?",
+    autoRefreshing: "??????? ???????? ????...",
+    requestBill: "?? ???? ????????",
+    billOnWay: "? ???????? ?? ??????",
+    sending: "???? ???????�",
+    orderPlacedTitle: "?? ????? ?????!",
+    orderPlacedDesc: "?? ????? ????? ??? {id} ??? ??????.",
+    notifOnTitle: "?? ????????? ??????",
+    notifOnDesc: "??????? ??? ?????? ????.",
+    errorTitle: "???",
+    orderFailedDesc: "??? ????? ?????.",
+    billRequestedTitle: "?? ??? ???????? ?",
+    billRequestedDesc: "?? ????? ????????. ?????? ???? ??????.",
+    billFailedDesc: "???? ??? ????????. ???? ??????? ???? ????????.",
+    messageFailedTitle: "??? ????? ???????",
+    messageFailedDesc: "???? ???????? ??? ???? ?? ??????? ??? ????????.",
+    thankYouTitle: "????? ??!",
+    feedbackRecordedDesc: "?? ????? ????????.",
+    orderReadyTitle: "?? ????? ????!",
+    orderReadyDesc: "????? ??? {id} ???? � ???????!",
+    orderHash: "??? #{id}",
+    checkingLocation: "???? ?????? ?? ?????...",
+    outsideCafeTitle: "??? ???? ???? ????",
+    outsideCafeBody: "??????? ?????? ?????? ??? ????? ?????? ?? ??????. ?? ??? ?????? ????????.",
+    locationNeededTitle: "?????? ??? ?????? ?????",
+    locationNeededBody: "???????? ???????? ???? ?????? ??????? ??? ?????? ?? ?????? ?????? ?? ????? ?? ??????? ?? ??? ????? ??? ??????.",
+    locationUnsupportedBody: "????? ?? ?????? ?? ???? ????? ??????? ??? ?? ?????? ?????? ?? ????? ?? ??????. ???? ??? ???????? ?? ??? ????????.",
   },
 };
 
@@ -398,23 +398,23 @@ const DEFAULT_PAYMENT_METHODS = [
 
 const CASH_METHOD = { id: "cash", name: "Cash", account: "Pay at the counter", color: "gray" };
 
-const SENTIMENT_EMOJIS = ["😡", "😐", "🙂", "😍"];
+const SENTIMENT_EMOJIS = ["??", "??", "??", "??"];
 
 const STATUS_INFO: Record<string, { labelKey: string; icon: string; color: string }> = {
-  pending:  { labelKey: "statusPending",   icon: "🟡", color: "text-amber-600"       },
-  preparing:{ labelKey: "statusPreparing", icon: "🔵", color: "text-blue-600"        },
-  ready:    { labelKey: "statusReady",     icon: "🟢", color: "text-green-600"       },
-  served:   { labelKey: "statusServed",    icon: "✅", color: "text-muted-foreground" },
+  pending:  { labelKey: "statusPending",   icon: "??", color: "text-amber-600"       },
+  preparing:{ labelKey: "statusPreparing", icon: "??", color: "text-blue-600"        },
+  ready:    { labelKey: "statusReady",     icon: "??", color: "text-green-600"       },
+  served:   { labelKey: "statusServed",    icon: "?", color: "text-muted-foreground" },
 };
 
-const WELCOME_TEXT = "እንኳን ወደ ዜድ ፓስትሪ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ዛሬ ምን ማዘዝ ይፈልጋሉ?";
+const WELCOME_TEXT = "???? ?? ?? ???? ?? ???? ??! ?? ????? ??? ??? ?? ?? ??? ??????";
 
 // Table detection: the ONLY source of truth is the `table` param encoded in
 // the QR code on that physical table (see staff/qr-generator.tsx). This is
-// exact — no GPS, no distance guessing, no "are you inside the café" checks
+// exact � no GPS, no distance guessing, no "are you inside the caf�" checks
 // that can misfire indoors. Scan the code on Table 4 and you get Table 4's
 // menu, every time. If the param is missing (someone opened the bare /menu
-// URL without scanning anything), we don't guess — we ask them to scan.
+// URL without scanning anything), we don't guess � we ask them to scan.
 function readTableIdFromUrl(): string | null {
   if (typeof window === "undefined") return null;
   const raw = new URLSearchParams(window.location.search).get("table");
@@ -422,7 +422,7 @@ function readTableIdFromUrl(): string | null {
   return trimmed ? trimmed : null;
 }
 
-// Cinematic intro — 4 animated phases
+// Cinematic intro � 4 animated phases
 type IntroPhase = "enter" | "title" | "ai" | "exit" | "done";
 
 function CinematicIntro({ onDone }: { onDone: () => void }) {
@@ -470,14 +470,14 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
           <div className="ripple-ring absolute w-[32rem] h-[32rem] rounded-full border border-amber-700/15" style={{ animationDelay: "1.4s" }} />
         </div>
 
-        {/* Coffee icon — phase: enter */}
+        {/* Coffee icon � phase: enter */}
         {(phase === "enter" || phase === "title" || phase === "ai" || phase === "exit") && (
           <div className={`anim-scale-in flex flex-col items-center gap-6 px-8 max-w-sm w-full text-center`} style={{ animationDelay: "0.1s" }}>
             {/* Logo mark */}
             <div className="relative">
               <div className="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-2xl"
                 style={{ background: "linear-gradient(135deg,#d4a017,#a06010)", boxShadow: "0 10px 30px rgba(160,96,16,0.35)" }}>
-                ☕
+                ?
               </div>
               <div className="absolute inset-0 rounded-full blur-xl opacity-30"
                 style={{ background: "#c8891a", transform: "scale(1.3)" }} />
@@ -498,7 +498,7 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
                 >
                   Z Pastry Cafe
                 </h1>
-                <p className="text-xs font-semibold tracking-[0.5em] text-amber-800/60 uppercase">Dire Dawa · Ethiopia</p>
+                <p className="text-xs font-semibold tracking-[0.5em] text-amber-800/60 uppercase">Dire Dawa � Ethiopia</p>
               </div>
             )}
 
@@ -518,8 +518,8 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0"
                     style={{ background: "linear-gradient(135deg,#d4a017,#a06010)" }}>IB</div>
                   <div className="text-left">
-                    <p lang="am" className="text-stone-800 font-ethiopic font-bold text-base leading-tight">እስራኤል በላይ</p>
-                    <p className="text-amber-700/70 text-[10px] font-semibold tracking-widest uppercase">AI Hostess · Z Pastry Cafe</p>
+                    <p lang="am" className="text-stone-800 font-ethiopic font-bold text-base leading-tight">????? ???</p>
+                    <p className="text-amber-700/70 text-[10px] font-semibold tracking-widest uppercase">AI Hostess � Z Pastry Cafe</p>
                   </div>
                 </div>
                 <p lang="am" className="text-stone-700 text-base leading-relaxed font-light font-ethiopic">
@@ -528,7 +528,7 @@ function CinematicIntro({ onDone }: { onDone: () => void }) {
               </div>
             )}
 
-            <p lang="am" className="text-amber-800/40 text-xs mt-2 font-ethiopic">ለመቀጠል ይጫኑ</p>
+            <p lang="am" className="text-amber-800/40 text-xs mt-2 font-ethiopic">????? ???</p>
           </div>
         )}
       </div>
@@ -587,7 +587,7 @@ export default function MenuPage() {
   const [unreadStaffReplies, setUnreadStaffReplies] = useState(0);
   const [israelOpen, setIsraelOpen] = useState(false);
   const [israelMessages, setIsraelMessages] = useState<IsraelMessage[]>([
-    { role: "assistant", content: "እንኳን ወደ ዜድ ፓስትሪ ካፌ በደህና መጡ! እኔ እስራኤል በላይ ነኝ። ምናሌያችን ከምን ላስተዋውቅዎ?" }
+    { role: "assistant", content: "???? ?? ?? ???? ?? ???? ??! ?? ????? ??? ??? ?????? ??? ????????" }
   ]);
   const [israelInput, setIsraelInput] = useState("");
   const [israelStreaming, setIsraelStreaming] = useState(false);
@@ -605,7 +605,7 @@ export default function MenuPage() {
     window.localStorage.setItem(LANG_STORAGE_KEY, lang);
   }, [lang]);
 
-  // Geofence — when enabled in Staff Settings, the menu is only shown while
+  // Geofence � when enabled in Staff Settings, the menu is only shown while
   // the customer's device reports being within radiusMeters of the cafe.
   // watchPosition keeps checking in the background, so if someone walks out
   // mid-session the menu disappears immediately, with no refresh needed.
@@ -655,7 +655,7 @@ export default function MenuPage() {
     }
   }, [appSettings, selectedPayment]);
 
-  // FIX 1: Real-time menu sync — refresh menu instantly when staff add/edit/delete items
+  // FIX 1: Real-time menu sync � refresh menu instantly when staff add/edit/delete items
   useEffect(() => {
     const channel = supabase
       .channel("menu-items-realtime")
@@ -700,7 +700,7 @@ export default function MenuPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [israelMessages]);
 
-  // Realtime — customer sees order status changes the second staff updates them.
+  // Realtime � customer sees order status changes the second staff updates them.
   useEffect(() => {
     if (!trackedOrder || trackedOrder.status === "served") return;
     const orderId = trackedOrder.id;
@@ -719,7 +719,7 @@ export default function MenuPage() {
     return () => { supabase.removeChannel(channel); };
   }, [trackedOrder?.id, trackedOrder?.status]);
 
-  // In-page heads-up for when the tab is open and in the foreground — the
+  // In-page heads-up for when the tab is open and in the foreground � the
   // push notification (src/lib/push.ts) covers the case where the customer
   // has switched apps, locked their phone, or closed the tab entirely.
   const prevStatusRef = useRef<string | null>(null);
@@ -737,7 +737,8 @@ export default function MenuPage() {
     ? (menuItems as MenuItem[]).filter((m) => m.available)
     : (menuItems as MenuItem[]).filter((m) => m.available && m.category === activeCategory);
 
-  const cartTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const foodTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const cartTotal = orderType === "takeaway" ? foodTotal + (appSettings?.takeawayFee ?? 0) : foodTotal;
   const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
 
   function addToCart(item: MenuItem) {
@@ -819,7 +820,7 @@ export default function MenuPage() {
         orderId: trackedOrder.id,
         tableId: trackedOrder.tableId,
         sender: "customer",
-        message: "📷 Bill photo",
+        message: "?? Bill photo",
         imageUrl: url,
       });
     } catch {
@@ -905,7 +906,7 @@ export default function MenuPage() {
     } catch {
       setIsraelMessages((prev) => {
         const updated = [...prev];
-        updated[updated.length - 1] = { role: "assistant", content: "ይቅርታ፣ ችግር ተፈጥሯል።" };
+        updated[updated.length - 1] = { role: "assistant", content: "????? ??? ??????" };
         return updated;
       });
     } finally {
@@ -947,14 +948,14 @@ export default function MenuPage() {
     ? allPaymentMethods.find((p) => p.id === selectedPayment)?.name ?? selectedPayment
     : "Cash";
 
-  // Table gate — the QR code on the table is the only real table detector.
+  // Table gate � the QR code on the table is the only real table detector.
   // If it's missing (bare /menu URL, no scan), don't guess a table: ask the
   // customer to scan the code so every order lands on the right table.
   if (!tableId) {
     return (
       <div dir={LANGUAGES.find((l) => l.code === lang)?.dir ?? "ltr"} className="min-h-screen flex flex-col items-center justify-center gap-5 px-6 text-center" style={{ background: "linear-gradient(160deg,#fdfaf4 0%,#f6ecd8 50%,#fdfaf4 100%)" }}>
         <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-xl" style={{ background: "linear-gradient(135deg,#d4a017,#a06010)" }}>
-          📷
+          ??
         </div>
         <div className="space-y-2 max-w-sm">
           <h2 className="font-serif font-bold text-xl text-amber-900">{t("qrScanTitle")}</h2>
@@ -980,12 +981,12 @@ export default function MenuPage() {
     );
   }
 
-  // Geofence gate — if Staff Settings has "Location Lock" enabled, the menu
+  // Geofence gate � if Staff Settings has "Location Lock" enabled, the menu
   // itself is replaced by this screen the instant the device is confirmed
   // outside the cafe radius (or location can't be confirmed at all).
   if (geoStatus === "outside" || geoStatus === "denied" || geoStatus === "unsupported" || geoStatus === "checking") {
     const dir = LANGUAGES.find((l) => l.code === lang)?.dir ?? "ltr";
-    const icon = geoStatus === "checking" ? "📍" : geoStatus === "outside" ? "🚫" : "📵";
+    const icon = geoStatus === "checking" ? "??" : geoStatus === "outside" ? "??" : "??";
     const title =
       geoStatus === "checking" ? t("checkingLocation") :
       geoStatus === "outside" ? t("outsideCafeTitle") :
@@ -1043,13 +1044,13 @@ export default function MenuPage() {
         {trackedOrder && trackedOrder.status !== "served" && (
           <div className="status-in fixed top-0 left-0 right-0 z-50 bg-card border-b border-card-border px-4 py-2.5 flex items-center justify-between gap-3 shadow-lg">
             <div className="flex items-center gap-2.5">
-              <span className="text-xl">{STATUS_INFO[trackedOrder.status]?.icon ?? "🟡"}</span>
+              <span className="text-xl">{STATUS_INFO[trackedOrder.status]?.icon ?? "??"}</span>
               <div>
                 <p className={`text-xs font-bold ${STATUS_INFO[trackedOrder.status]?.color}`}>
                   {STATUS_INFO[trackedOrder.status] ? t(STATUS_INFO[trackedOrder.status].labelKey) : trackedOrder.status}
                 </p>
                 <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                  {t("orderHash", { id: trackedOrder.id })} · {t("table")} {trackedOrder.tableId} · {t("autoRefreshing")}
+                  {t("orderHash", { id: trackedOrder.id })} � {t("table")} {trackedOrder.tableId} � {t("autoRefreshing")}
                   {pushEnabled && <Bell size={10} className="opacity-70" />}
                 </p>
               </div>
@@ -1060,7 +1061,7 @@ export default function MenuPage() {
                 onClick={() => setStaffChatOpen(true)}
                 className="relative text-[11px] font-bold px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground hover:bg-border active:scale-95 transition-all"
               >
-                💬 {t("messageStaff")}
+                ?? {t("messageStaff")}
                 {unreadStaffReplies > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                     {unreadStaffReplies}
@@ -1112,7 +1113,7 @@ export default function MenuPage() {
                   onClick={() => setLangMenuOpen((v) => !v)}
                   className="bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full px-3 py-2 text-sm font-semibold flex items-center gap-1.5 transition-all active:scale-95"
                 >
-                  🌐 <span className="hidden sm:inline">{LANGUAGES.find((l) => l.code === lang)?.nativeName}</span>
+                  ?? <span className="hidden sm:inline">{LANGUAGES.find((l) => l.code === lang)?.nativeName}</span>
                 </button>
                 {langMenuOpen && (
                   <>
@@ -1202,7 +1203,7 @@ export default function MenuPage() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl">☕</div>
+                        <div className="w-full h-full flex items-center justify-center text-4xl">?</div>
                       )}
                       <Badge className="absolute top-2 left-2 text-xs bg-primary/90 text-primary-foreground border-0 shadow">
                         {item.category}
@@ -1284,7 +1285,7 @@ export default function MenuPage() {
                                 : "border-border bg-secondary text-foreground"
                             }`}
                           >
-                            🍽️ {t("dineIn")}
+                            ??? {t("dineIn")}
                             <div className="text-[10px] font-normal opacity-70 mt-0.5">{t("table")} {tableId}</div>
                           </button>
                           <button
@@ -1296,7 +1297,7 @@ export default function MenuPage() {
                                 : "border-border bg-secondary text-foreground"
                             }`}
                           >
-                            🥡 {t("takeaway")}
+                            ?? {t("takeaway")}
                             <div className="text-[10px] font-normal opacity-70 mt-0.5">{t("toGo")}</div>
                           </button>
                         </div>
@@ -1403,7 +1404,7 @@ export default function MenuPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Message Staff — quick chat scoped to this order, e.g. "food is late?" */}
+        {/* Message Staff � quick chat scoped to this order, e.g. "food is late?" */}
         <Dialog open={staffChatOpen} onOpenChange={setStaffChatOpen}>
           <DialogContent className="max-w-sm p-0 overflow-hidden flex flex-col" style={{ height: "480px" }}>
             <DialogHeader className="bg-primary text-primary-foreground px-4 py-3 space-y-0">
@@ -1411,7 +1412,7 @@ export default function MenuPage() {
                 <MessageSquareText size={16} /> {t("messageStaff")}
               </DialogTitle>
               <p className="text-xs opacity-70">
-                {t("orderHash", { id: trackedOrder?.id ?? "" })} · {t("table")} {trackedOrder?.tableId}
+                {t("orderHash", { id: trackedOrder?.id ?? "" })} � {t("table")} {trackedOrder?.tableId}
               </p>
             </DialogHeader>
             <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-background">
@@ -1476,7 +1477,7 @@ export default function MenuPage() {
 
         {/* Footer */}
         <footer className="max-w-5xl mx-auto px-4 py-6 mt-4 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center">© Z Pastry Cafe · Dire Dawa, Ethiopia</p>
+          <p className="text-xs text-muted-foreground text-center">� Z Pastry Cafe � Dire Dawa, Ethiopia</p>
         </footer>
 
         {/* Israel Belay Floating Chat */}
@@ -1489,8 +1490,8 @@ export default function MenuPage() {
               <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-bold text-accent-foreground shrink-0">IB</div>
                 <div className="flex-1 min-w-0">
-                  <p lang="am" className="font-ethiopic font-bold text-sm leading-tight">እስራኤል በላይ</p>
-                  <p className="text-xs opacity-60">Israel Belay · አማርኛ</p>
+                  <p lang="am" className="font-ethiopic font-bold text-sm leading-tight">????? ???</p>
+                  <p className="text-xs opacity-60">Israel Belay � ????</p>
                 </div>
                 <button onClick={() => setIsraelOpen(false)} className="hover:opacity-70 transition-opacity shrink-0"><X size={18} /></button>
               </div>
@@ -1502,7 +1503,7 @@ export default function MenuPage() {
                         ? "bg-primary text-primary-foreground rounded-tr-sm"
                         : "bg-secondary text-secondary-foreground rounded-tl-sm"
                     }`}>
-                      {msg.content || <span className="opacity-40 animate-pulse">●●●</span>}
+                      {msg.content || <span className="opacity-40 animate-pulse">???</span>}
                     </div>
                   </div>
                 ))}
@@ -1515,7 +1516,7 @@ export default function MenuPage() {
                   value={israelInput}
                   onChange={(e) => setIsraelInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendIsraelMessage()}
-                  placeholder={isListening ? "ማዳመጫ ላይ..." : "ይጻፉ ወይም ይናገሩ..."}
+                  placeholder={isListening ? "???? ??..." : "??? ??? ????..."}
                   className="flex-1 text-sm font-ethiopic bg-secondary rounded-xl px-3 py-2 outline-none border border-border focus:border-ring placeholder:text-muted-foreground"
                   disabled={israelStreaming || isListening}
                 />

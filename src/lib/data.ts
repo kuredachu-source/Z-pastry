@@ -1,4 +1,4 @@
-﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -182,7 +182,7 @@ export function useListMenuItems() {
     // Keep zero stale time so any focus / reconnect / visibility return on
     // mobile pulls the latest menu instantly. Mobile browsers (especially
     // iOS Safari) throttle background WebSockets, so we cannot rely on
-    // realtime alone — focus refetch is the safety net.
+    // realtime alone � focus refetch is the safety net.
     staleTime: 0,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
@@ -210,7 +210,7 @@ export function useCreateMenuItem() {
       if (error) throw error;
       return mapMenuItem(row);
     },
-    // Optimistic — UI shows the new item instantly without waiting for network
+    // Optimistic � UI shows the new item instantly without waiting for network
     onMutate: async ({ data }) => {
       await qc.cancelQueries({ queryKey: getListMenuItemsQueryKey() });
       const prev = qc.getQueryData<MenuItem[]>(getListMenuItemsQueryKey()) ?? [];
@@ -304,7 +304,7 @@ export function useDeleteMenuItem() {
 }
 
 // ===== Orders =====
-// Full order history — used by reports/analytics, which need every order
+// Full order history � used by reports/analytics, which need every order
 // ever placed. Not for the live staff queue (see useListActiveOrders below);
 // pulling the entire history there is what was making the whole app feel
 // slower and slower as order history grew.
@@ -431,12 +431,20 @@ export function useCreateOrder() {
         return mapOrder(updatedRow);
       }
 
+      const { data: settingsRow } = await supabase
+        .from("settings")
+        .select("value")
+        .eq("key", "app")
+        .maybeSingle();
+      const takeawayFee = Number((settingsRow?.value as any)?.takeawayFee ?? 0);
+      const packagingFee = data.orderType === "takeaway" ? takeawayFee : 0;
+
       const { data: orderRow, error: oErr } = await supabase
         .from("orders")
         .insert({
           table_id: data.tableId,
           status: "pending",
-          total_amount: total,
+          total_amount: total + packagingFee,
           payment_method: data.paymentMethod ?? null,
           order_type: data.orderType ?? "dinein",
         })
@@ -497,7 +505,7 @@ export function useUpdateOrderStatus() {
       if (error) throw error;
 
       // "Order ready" is the moment the customer actually needs to hear about
-      // it, often after they've wandered off from the ordering page — so this
+      // it, often after they've wandered off from the ordering page � so this
       // fires a real push notification, not just an in-page realtime update.
       // Fire-and-forget: a notification hiccup should never block the status
       // change itself.
@@ -507,8 +515,8 @@ export function useUpdateOrderStatus() {
           .invoke("send-push", {
             body: {
               orderId: id,
-              title: "🟢 Order Ready!",
-              body: `${kind} — Order #${id} is ready for pickup!`,
+              title: "?? Order Ready!",
+              body: `${kind} � Order #${id} is ready for pickup!`,
             },
           })
           .catch(() => {});
@@ -516,7 +524,7 @@ export function useUpdateOrderStatus() {
 
       return mapOrder(row);
     },
-    // Optimistic update — UI reflects the new status in <1s without waiting
+    // Optimistic update � UI reflects the new status in <1s without waiting
     // for the network round-trip. Realtime will reconcile any drift.
     onMutate: async ({ id, data }) => {
       await qc.cancelQueries({ queryKey: getListOrdersQueryKey() });
@@ -909,15 +917,15 @@ export function useGetAnalyticsSummary({ period }: { period: "day" | "week" | "m
       const peakDays = dayAgg;
       const revenueOverTime = Array.from(timeAgg.values()).sort((a, b) => a.date.localeCompare(b.date));
 
-      // Sentiment score: 😡=1, 😐=2, 🙂=3, 😍=4
-      const SENT_MAP: Record<string, number> = { "😡": 1, "😐": 2, "🙂": 3, "😍": 4 };
+      // Sentiment score: ??=1, ??=2, ??=3, ??=4
+      const SENT_MAP: Record<string, number> = { "??": 1, "??": 2, "??": 3, "??": 4 };
       const sentiments = (sentimentRes.data ?? []) as any[];
       const sentScores = sentiments.map((s) => SENT_MAP[s.emoji] ?? 0).filter((n) => n > 0);
       const sentimentScore = sentScores.length > 0
         ? sentScores.reduce((a, b) => a + b, 0) / sentScores.length
         : 0;
       const sentimentCount = sentScores.length;
-      const sentimentBreakdown = ["😡", "😐", "🙂", "😍"].map((emoji) => ({
+      const sentimentBreakdown = ["??", "??", "??", "??"].map((emoji) => ({
         emoji,
         count: sentiments.filter((s) => s.emoji === emoji).length,
       }));
@@ -953,6 +961,7 @@ export type AppSettings = {
   paymentMethods: PaymentMethod[];
   waiters?: string[];
   geofence?: GeofenceSettings;
+  takeawayFee?: number;
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
